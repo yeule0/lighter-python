@@ -1,0 +1,6 @@
+disallowAdditionalPropertiesIfNotPresent: true
+library: asyncio
+packageName: lighter
+projectName: lighter
+
+
