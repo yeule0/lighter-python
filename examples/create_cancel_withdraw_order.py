@@ -6,7 +6,7 @@ import lighter
 logging.basicConfig(level=logging.DEBUG)
 
 
-BASE_URL = "https://mainnet.lighter.elliot.ai"
+BASE_URL = "https://mainnet.zklighter.elliot.ai"
 PRIVATE_KEY = "WALLET_PRIVATE_KEY"
 
 
