@@ -1,4 +1,4 @@
-# lighter
+# Lighter Python
 
 Python SDK for Lighter
 
@@ -56,9 +56,9 @@ python examples/get_info.py
 python examples/ws.py
 ```
 
-## [Create, Cancel & Withdraw Orders](examples/create_cancel_withdraw_order.py)
+## [Create & Cancel Orders](examples/create_cancel_order.py)
 ```sh
-python examples/create_cancel_withdraw_order.py
+python examples/create_cancel_order.py
 ```
 
 ## Documentation for API Endpoints
