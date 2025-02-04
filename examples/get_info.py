@@ -17,13 +17,13 @@ async def account_apis(client: lighter.ApiClient):
     await print_api(account_instance.accounts, index=0, limit=2, sort="asc")
     await print_api(
         account_instance.accounts_by_l1_address,
-        l1_address="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        l1_address="0x3fBBA2b0e07895ae8638D17fd83d72338954D272",
     )
     # await print_api(account_instance.apikeys, account_index=3, api_key_index=255)
     await print_api(account_instance.fee_bucket, account_index=3)
     await print_api(
         account_instance.is_whitelisted,
-        l1_address="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        l1_address="0x3fBBA2b0e07895ae8638D17fd83d72338954D272",
     )
     await print_api(
         account_instance.pnl,
@@ -69,7 +69,6 @@ async def candlestick_apis(client: lighter.ApiClient):
 async def info_apis(client: lighter.ApiClient):
     logging.info("INFO APIS")
     info_instance = lighter.InfoApi(client)
-    await print_api(info_instance.layer1_basic_info)
     await print_api(info_instance.layer2_basic_info)
 
 
@@ -117,11 +116,11 @@ async def transaction_apis(client: lighter.ApiClient):
     await print_api(transaction_instance.block_txs, by="block_height", value="1")
     await print_api(
         transaction_instance.deposit_history,
-        l1_address="0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        l1_address="0x3fBBA2b0e07895ae8638D17fd83d72338954D272",
     )
     await print_api(transaction_instance.next_nonce, account_index=1, api_key_index=0)
     # await print_api(transaction_instance.pending_txs, limit=2)
-    await print_api(transaction_instance.tx, by="sequence_index", value="5")
+    # await print_api(transaction_instance.tx, by="sequence_index", value="0")
     # await print_api(transaction_instance.tx_from_l1_tx_hash, hash="0x")
     await print_api(transaction_instance.txs, index=0, limit=2)
     await print_api(transaction_instance.withdraw_history, account_index=3)
@@ -129,7 +128,7 @@ async def transaction_apis(client: lighter.ApiClient):
 
 async def main():
     client = lighter.ApiClient(
-        configuration=lighter.Configuration(host="https://staging.lighter.elliot.ai")
+        configuration=lighter.Configuration(host="https://mainnet.zklighter.elliot.ai")
     )
     await account_apis(client)
     await block_apis(client)
