@@ -2,6 +2,7 @@ import ctypes
 import platform
 import logging
 import os
+import time
 
 from eth_account import Account
 import lighter
@@ -38,6 +39,11 @@ class SignerClient:
     ORDER_TIME_IN_FORCE_IMMEDIATE_OR_CANCEL = 0
     ORDER_TIME_IN_FORCE_GOOD_TILL_TIME = 1
     ORDER_TIME_IN_FORCE_POST_ONLY = 2
+
+    NIL_TRIGGER_PRICE = 0
+    DEFAULT_28_DAY_ORDER_EXPIRY = -1
+    DEFAULT_10_MIN_AUTH_EXPIRY = -1
+    MINUTE = 60
 
     def __init__(
         self, url, private_key, chain_id=300, api_key_index=0, account_index=-1
@@ -118,7 +124,7 @@ class SignerClient:
         time_in_force,
         reduce_only,
         trigger_price,
-        order_expiry=-1,  # -1 means constant 28 days expiry
+        order_expiry=DEFAULT_28_DAY_ORDER_EXPIRY,
         nonce=-1,
     ):
         self.signer.SignCreateOrder.argtypes = [
@@ -140,7 +146,7 @@ class SignerClient:
             client_order_index,
             base_amount,
             price,
-            is_ask,
+            int(is_ask),
             order_type,
             time_in_force,
             reduce_only,
@@ -270,7 +276,9 @@ class SignerClient:
             "utf-8"
         )
 
-    def create_auth_token(self, deadline=0):
+    def create_auth_token_with_expiry(self, deadline: int=DEFAULT_10_MIN_AUTH_EXPIRY):
+        if deadline == SignerClient.DEFAULT_10_MIN_AUTH_EXPIRY:
+            deadline = int(time.time() + 10 * SignerClient.MINUTE)
         self.signer.CreateAuthToken.argtypes = [ctypes.c_longlong]
         self.signer.CreateAuthToken.restype = ctypes.c_char_p
         return self.signer.CreateAuthToken(deadline).decode("utf-8")
@@ -284,8 +292,8 @@ class SignerClient:
         is_ask,
         order_type,
         time_in_force,
-        reduce_only,
-        trigger_price,
+        reduce_only=False,
+        trigger_price=NIL_TRIGGER_PRICE,
         order_expiry=-1,
         nonce=-1,
     ) -> (CreateOrder, TxHash):
@@ -294,10 +302,10 @@ class SignerClient:
             client_order_index,
             base_amount,
             price,
-            is_ask,
+            int(is_ask),
             order_type,
             time_in_force,
-            reduce_only,
+            int(reduce_only),
             trigger_price,
             order_expiry,
             nonce,
