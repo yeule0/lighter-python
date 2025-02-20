@@ -1,13 +1,16 @@
 [tool.poetry]
-name = "lighter"
-version = "1.0.0"
-description = ""
-authors = ["OpenAPI Generator Community <team@openapitools.org>"]
+name = "lighter-sdk"
+version = "0.1.0"
+description = "Python client for Lighter"
+authors = ["elliot"]
 license = "NoLicense"
 readme = "README.md"
 repository = "https://github.com/elliottech/lighter-python"
-keywords = ["OpenAPI", "OpenAPI-Generator", ""]
+keywords = ["OpenAPI", "OpenAPI-Generator"]
 include = ["lighter/py.typed"]
+
+[tool.poetry.packages]
+python = ["lighter"]
 
 [tool.poetry.dependencies]
 python = "^3.7"

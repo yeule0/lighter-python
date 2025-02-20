@@ -41,7 +41,7 @@ async def main():
     tx = await client.create_order(
         market_index=0,
         client_order_index=0,
-        base_amount=100000,
+        base_amount=10000,
         price=250000,
         is_ask=False,
         order_type=lighter.SignerClient.ORDER_TYPE_LIMIT,
