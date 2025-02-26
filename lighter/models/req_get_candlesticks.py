@@ -32,6 +32,7 @@ class ReqGetCandlesticks(BaseModel):
     end_timestamp: StrictInt
     count_back: StrictInt
     set_timestamp_to_end: Optional[StrictBool] = False
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["market_id", "resolution", "start_timestamp", "end_timestamp", "count_back", "set_timestamp_to_end"]
 
     @field_validator('resolution')
@@ -71,8 +72,10 @@ class ReqGetCandlesticks(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -80,6 +83,11 @@ class ReqGetCandlesticks(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -91,11 +99,6 @@ class ReqGetCandlesticks(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in ReqGetCandlesticks) in the input: " + _key)
-
         _obj = cls.model_validate({
             "market_id": obj.get("market_id"),
             "resolution": obj.get("resolution"),
@@ -104,6 +107,11 @@ class ReqGetCandlesticks(BaseModel):
             "count_back": obj.get("count_back"),
             "set_timestamp_to_end": obj.get("set_timestamp_to_end") if obj.get("set_timestamp_to_end") is not None else False
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

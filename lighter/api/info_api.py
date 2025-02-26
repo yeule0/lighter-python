@@ -54,7 +54,7 @@ class InfoApi:
     ) -> Layer2BasicInfo:
         """layer2BasicInfo
 
-        Get zklighter general info, including contract address, and count of transactions and active users
+        Get zklighter general info, including transaction and block stats
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -118,7 +118,7 @@ class InfoApi:
     ) -> ApiResponse[Layer2BasicInfo]:
         """layer2BasicInfo
 
-        Get zklighter general info, including contract address, and count of transactions and active users
+        Get zklighter general info, including transaction and block stats
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -182,7 +182,7 @@ class InfoApi:
     ) -> RESTResponseType:
         """layer2BasicInfo
 
-        Get zklighter general info, including contract address, and count of transactions and active users
+        Get zklighter general info, including transaction and block stats
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

@@ -36,6 +36,7 @@ class Account(BaseModel):
     pending_order_count: StrictInt
     status: StrictInt
     collateral: StrictStr
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["code", "message", "account_type", "index", "l1_address", "cancel_all_time", "total_order_count", "pending_order_count", "status", "collateral"]
 
     model_config = ConfigDict(
@@ -68,8 +69,10 @@ class Account(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -77,6 +80,11 @@ class Account(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -87,11 +95,6 @@ class Account(BaseModel):
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
-
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in Account) in the input: " + _key)
 
         _obj = cls.model_validate({
             "code": obj.get("code"),
@@ -105,6 +108,11 @@ class Account(BaseModel):
             "status": obj.get("status"),
             "collateral": obj.get("collateral")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

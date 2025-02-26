@@ -33,6 +33,7 @@ class ExchangeStats(BaseModel):
     order_book_stats: List[OrderBookStats]
     daily_usd_volume: Union[StrictFloat, StrictInt]
     daily_trades_count: StrictInt
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["code", "message", "total", "order_book_stats", "daily_usd_volume", "daily_trades_count"]
 
     model_config = ConfigDict(
@@ -65,8 +66,10 @@ class ExchangeStats(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -81,6 +84,11 @@ class ExchangeStats(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['order_book_stats'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -92,11 +100,6 @@ class ExchangeStats(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in ExchangeStats) in the input: " + _key)
-
         _obj = cls.model_validate({
             "code": obj.get("code"),
             "message": obj.get("message"),
@@ -105,6 +108,11 @@ class ExchangeStats(BaseModel):
             "daily_usd_volume": obj.get("daily_usd_volume"),
             "daily_trades_count": obj.get("daily_trades_count")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

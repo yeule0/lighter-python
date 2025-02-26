@@ -31,6 +31,7 @@ class Trades(BaseModel):
     message: Optional[StrictStr] = None
     next_cursor: Optional[StrictStr] = None
     trades: List[Trade]
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["code", "message", "next_cursor", "trades"]
 
     model_config = ConfigDict(
@@ -63,8 +64,10 @@ class Trades(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -79,6 +82,11 @@ class Trades(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['trades'] = _items
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -90,17 +98,17 @@ class Trades(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in Trades) in the input: " + _key)
-
         _obj = cls.model_validate({
             "code": obj.get("code"),
             "message": obj.get("message"),
             "next_cursor": obj.get("next_cursor"),
             "trades": [Trade.from_dict(_item) for _item in obj["trades"]] if obj.get("trades") is not None else None
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

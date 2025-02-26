@@ -39,6 +39,7 @@ class MarketInfo(BaseModel):
     daily_price_low: Union[StrictFloat, StrictInt]
     daily_price_high: Union[StrictFloat, StrictInt]
     daily_price_change: Union[StrictFloat, StrictInt]
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["market_id", "index_price", "mark_price", "open_interest", "last_trade_price", "current_funding_rate", "funding_rate", "funding_timestamp", "daily_base_token_volume", "daily_quote_token_volume", "daily_price_low", "daily_price_high", "daily_price_change"]
 
     model_config = ConfigDict(
@@ -71,8 +72,10 @@ class MarketInfo(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -80,6 +83,11 @@ class MarketInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -90,11 +98,6 @@ class MarketInfo(BaseModel):
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
-
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in MarketInfo) in the input: " + _key)
 
         _obj = cls.model_validate({
             "market_id": obj.get("market_id"),
@@ -111,6 +114,11 @@ class MarketInfo(BaseModel):
             "daily_price_high": obj.get("daily_price_high"),
             "daily_price_change": obj.get("daily_price_change")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

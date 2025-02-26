@@ -31,6 +31,7 @@ class PublicPoolInfo(BaseModel):
     min_operator_share_rate: StrictStr
     total_shares: StrictInt
     operator_shares: StrictInt
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["status", "operator_fee", "min_operator_share_rate", "total_shares", "operator_shares"]
 
     model_config = ConfigDict(
@@ -63,8 +64,10 @@ class PublicPoolInfo(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -72,6 +75,11 @@ class PublicPoolInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -83,11 +91,6 @@ class PublicPoolInfo(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in PublicPoolInfo) in the input: " + _key)
-
         _obj = cls.model_validate({
             "status": obj.get("status"),
             "operator_fee": obj.get("operator_fee"),
@@ -95,6 +98,11 @@ class PublicPoolInfo(BaseModel):
             "total_shares": obj.get("total_shares"),
             "operator_shares": obj.get("operator_shares")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

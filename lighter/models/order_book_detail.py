@@ -53,6 +53,7 @@ class OrderBookDetail(BaseModel):
     daily_price_change: Union[StrictFloat, StrictInt]
     open_interest: Union[StrictFloat, StrictInt]
     daily_chart: Dict[str, Union[StrictFloat, StrictInt]]
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["symbol", "market_id", "status", "taker_fee", "maker_fee", "liquidation_fee", "min_base_amount", "min_quote_amount", "supported_size_decimals", "supported_price_decimals", "supported_quote_decimals", "size_decimals", "price_decimals", "quote_multiplier", "default_initial_margin_fraction", "min_initial_margin_fraction", "maintenance_margin_fraction", "closeout_margin_fraction", "last_trade_price", "daily_trades_count", "daily_base_token_volume", "daily_quote_token_volume", "daily_price_low", "daily_price_high", "daily_price_change", "open_interest", "daily_chart"]
 
     @field_validator('status')
@@ -92,8 +93,10 @@ class OrderBookDetail(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -101,6 +104,11 @@ class OrderBookDetail(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -111,11 +119,6 @@ class OrderBookDetail(BaseModel):
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
-
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in OrderBookDetail) in the input: " + _key)
 
         _obj = cls.model_validate({
             "symbol": obj.get("symbol"),
@@ -146,6 +149,11 @@ class OrderBookDetail(BaseModel):
             "open_interest": obj.get("open_interest"),
             "daily_chart": obj.get("daily_chart")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 
