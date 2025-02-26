@@ -29,6 +29,7 @@ class CurrentHeight(BaseModel):
     code: StrictInt
     message: Optional[StrictStr] = None
     height: StrictInt
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["code", "message", "height"]
 
     model_config = ConfigDict(
@@ -61,8 +62,10 @@ class CurrentHeight(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -70,6 +73,11 @@ class CurrentHeight(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -81,16 +89,16 @@ class CurrentHeight(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in CurrentHeight) in the input: " + _key)
-
         _obj = cls.model_validate({
             "code": obj.get("code"),
             "message": obj.get("message"),
             "height": obj.get("height")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

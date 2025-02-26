@@ -37,6 +37,7 @@ class OrderBook(BaseModel):
     supported_size_decimals: StrictInt
     supported_price_decimals: StrictInt
     supported_quote_decimals: StrictInt
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["symbol", "market_id", "status", "taker_fee", "maker_fee", "liquidation_fee", "min_base_amount", "min_quote_amount", "supported_size_decimals", "supported_price_decimals", "supported_quote_decimals"]
 
     @field_validator('status')
@@ -76,8 +77,10 @@ class OrderBook(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -85,6 +88,11 @@ class OrderBook(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -95,11 +103,6 @@ class OrderBook(BaseModel):
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
-
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in OrderBook) in the input: " + _key)
 
         _obj = cls.model_validate({
             "symbol": obj.get("symbol"),
@@ -114,6 +117,11 @@ class OrderBook(BaseModel):
             "supported_price_decimals": obj.get("supported_price_decimals"),
             "supported_quote_decimals": obj.get("supported_quote_decimals")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

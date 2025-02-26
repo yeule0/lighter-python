@@ -36,6 +36,7 @@ class ReqGetTrades(BaseModel):
     var_from: Optional[StrictInt] = Field(default=-1, alias="from")
     ask_filter: Optional[StrictInt] = None
     limit: Annotated[int, Field(le=100, strict=True, ge=1)]
+    additional_properties: Dict[str, Any] = {}
     __properties: ClassVar[List[str]] = ["market_id", "account_index", "order_index", "sort_by", "sort_dir", "cursor", "from", "ask_filter", "limit"]
 
     @field_validator('sort_by')
@@ -85,8 +86,10 @@ class ReqGetTrades(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -94,6 +97,11 @@ class ReqGetTrades(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
@@ -104,11 +112,6 @@ class ReqGetTrades(BaseModel):
 
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
-
-        # raise errors for additional fields in the input
-        for _key in obj.keys():
-            if _key not in cls.__properties:
-                raise ValueError("Error due to additional fields (not defined in ReqGetTrades) in the input: " + _key)
 
         _obj = cls.model_validate({
             "market_id": obj.get("market_id"),
@@ -121,6 +124,11 @@ class ReqGetTrades(BaseModel):
             "ask_filter": obj.get("ask_filter"),
             "limit": obj.get("limit")
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

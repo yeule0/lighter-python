@@ -21,6 +21,7 @@ from lighter.models.account_metadata import AccountMetadata
 from lighter.models.account_pn_l import AccountPnL
 from lighter.models.account_position import AccountPosition
 from lighter.models.account_stats import AccountStats
+from lighter.models.account_trade_stats import AccountTradeStats
 from lighter.models.accounts import Accounts
 from lighter.models.api_key import ApiKey
 from lighter.models.block import Block
@@ -41,7 +42,6 @@ from lighter.models.exchange_stats import ExchangeStats
 from lighter.models.fee_bucket import FeeBucket
 from lighter.models.funding import Funding
 from lighter.models.fundings import Fundings
-from lighter.models.is_whitelisted import IsWhitelisted
 from lighter.models.l1_provider_info import L1ProviderInfo
 from lighter.models.layer2_basic_info import Layer2BasicInfo
 from lighter.models.liquidation import Liquidation
@@ -93,7 +93,6 @@ from lighter.models.req_get_recent_trades import ReqGetRecentTrades
 from lighter.models.req_get_trades import ReqGetTrades
 from lighter.models.req_get_tx import ReqGetTx
 from lighter.models.req_get_withdraw_history import ReqGetWithdrawHistory
-from lighter.models.req_is_whitelisted import ReqIsWhitelisted
 from lighter.models.result_code import ResultCode
 from lighter.models.simple_order import SimpleOrder
 from lighter.models.status import Status
@@ -107,6 +106,5 @@ from lighter.models.tx_hashes import TxHashes
 from lighter.models.txs import Txs
 from lighter.models.validator_info import ValidatorInfo
 from lighter.models.withdraw_history import WithdrawHistory
-from lighter.models.withdraw_history_cursor import WithdrawHistoryCursor
 from lighter.models.withdraw_history_item import WithdrawHistoryItem
 from lighter.models.zk_lighter_info import ZkLighterInfo

@@ -65,7 +65,7 @@ class OrderApi:
     ) -> Orders:
         """accountActiveOrders
 
-        Get account active orders
+        Get account active orders. `auth` can be generated using the SDK.
 
         :param account_index: (required)
         :type account_index: int
@@ -141,7 +141,7 @@ class OrderApi:
     ) -> ApiResponse[Orders]:
         """accountActiveOrders
 
-        Get account active orders
+        Get account active orders. `auth` can be generated using the SDK.
 
         :param account_index: (required)
         :type account_index: int
@@ -217,7 +217,7 @@ class OrderApi:
     ) -> RESTResponseType:
         """accountActiveOrders
 
-        Get account active orders
+        Get account active orders. `auth` can be generated using the SDK.
 
         :param account_index: (required)
         :type account_index: int
@@ -365,7 +365,7 @@ class OrderApi:
     ) -> Orders:
         """accountInactiveOrders
 
-        Get account active orders
+        Get account inactive orders
 
         :param account_index: (required)
         :type account_index: int
@@ -453,7 +453,7 @@ class OrderApi:
     ) -> ApiResponse[Orders]:
         """accountInactiveOrders
 
-        Get account active orders
+        Get account inactive orders
 
         :param account_index: (required)
         :type account_index: int
@@ -541,7 +541,7 @@ class OrderApi:
     ) -> RESTResponseType:
         """accountInactiveOrders
 
-        Get account active orders
+        Get account inactive orders
 
         :param account_index: (required)
         :type account_index: int

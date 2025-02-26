@@ -1,4 +1,4 @@
-disallowAdditionalPropertiesIfNotPresent: true
+disallowAdditionalPropertiesIfNotPresent: false
 library: asyncio
 packageName: lighter-sdk
 projectName: lighter-sdk
