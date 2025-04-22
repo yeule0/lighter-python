@@ -27,13 +27,14 @@ class SimpleOrder(BaseModel):
     SimpleOrder
     """ # noqa: E501
     order_index: StrictInt
+    order_id: StrictStr
     owner_account_index: StrictInt
     initial_base_amount: StrictStr
     remaining_base_amount: StrictStr
     price: StrictStr
     order_expiry: StrictInt
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["order_index", "owner_account_index", "initial_base_amount", "remaining_base_amount", "price", "order_expiry"]
+    __properties: ClassVar[List[str]] = ["order_index", "order_id", "owner_account_index", "initial_base_amount", "remaining_base_amount", "price", "order_expiry"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,6 +95,7 @@ class SimpleOrder(BaseModel):
 
         _obj = cls.model_validate({
             "order_index": obj.get("order_index"),
+            "order_id": obj.get("order_id"),
             "owner_account_index": obj.get("owner_account_index"),
             "initial_base_amount": obj.get("initial_base_amount"),
             "remaining_base_amount": obj.get("remaining_base_amount"),

@@ -16,8 +16,9 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import StrictBool, StrictInt, StrictStr, field_validator
+from pydantic import Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Optional
+from typing_extensions import Annotated
 from lighter.models.candlesticks import Candlesticks
 from lighter.models.fundings import Fundings
 
@@ -44,8 +45,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         set_timestamp_to_end: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -132,8 +133,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         set_timestamp_to_end: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -220,8 +221,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         set_timestamp_to_end: Optional[StrictBool] = None,
         _request_timeout: Union[
@@ -392,8 +393,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         _request_timeout: Union[
             None,
@@ -476,8 +477,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         _request_timeout: Union[
             None,
@@ -560,8 +561,8 @@ class CandlestickApi:
         self,
         market_id: StrictInt,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
         _request_timeout: Union[
             None,

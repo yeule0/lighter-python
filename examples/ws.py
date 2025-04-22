@@ -1,6 +1,6 @@
 import json
 import logging
-from lighter import WsClient
+import lighter
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,7 +13,7 @@ def on_account_update(account_id, account):
     logging.info(f"Account {account_id}:\n{json.dumps(account, indent=2)}")
 
 
-client = WsClient(
+client = lighter.WsClient(
     order_book_ids=[0, 1],
     account_ids=[1, 2],
     on_order_book_update=on_order_book_update,

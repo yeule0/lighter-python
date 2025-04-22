@@ -17,8 +17,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Union
+from lighter.models.daily_return import DailyReturn
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,8 +32,13 @@ class PublicPoolInfo(BaseModel):
     min_operator_share_rate: StrictStr
     total_shares: StrictInt
     operator_shares: StrictInt
+    share_price_1d: Union[StrictFloat, StrictInt]
+    share_price_7d: Union[StrictFloat, StrictInt]
+    share_price_30d: Union[StrictFloat, StrictInt]
+    annual_percentage_yield: Union[StrictFloat, StrictInt]
+    daily_returns: List[DailyReturn]
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["status", "operator_fee", "min_operator_share_rate", "total_shares", "operator_shares"]
+    __properties: ClassVar[List[str]] = ["status", "operator_fee", "min_operator_share_rate", "total_shares", "operator_shares", "share_price_1d", "share_price_7d", "share_price_30d", "annual_percentage_yield", "daily_returns"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -75,6 +81,13 @@ class PublicPoolInfo(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in daily_returns (list)
+        _items = []
+        if self.daily_returns:
+            for _item in self.daily_returns:
+                if _item:
+                    _items.append(_item.to_dict())
+            _dict['daily_returns'] = _items
         # puts key-value pairs in additional_properties in the top level
         if self.additional_properties is not None:
             for _key, _value in self.additional_properties.items():
@@ -96,7 +109,12 @@ class PublicPoolInfo(BaseModel):
             "operator_fee": obj.get("operator_fee"),
             "min_operator_share_rate": obj.get("min_operator_share_rate"),
             "total_shares": obj.get("total_shares"),
-            "operator_shares": obj.get("operator_shares")
+            "operator_shares": obj.get("operator_shares"),
+            "share_price_1d": obj.get("share_price_1d"),
+            "share_price_7d": obj.get("share_price_7d"),
+            "share_price_30d": obj.get("share_price_30d"),
+            "annual_percentage_yield": obj.get("annual_percentage_yield"),
+            "daily_returns": [DailyReturn.from_dict(_item) for _item in obj["daily_returns"]] if obj.get("daily_returns") is not None else None
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

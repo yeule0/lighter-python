@@ -18,7 +18,7 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,14 +31,16 @@ class AccountPosition(BaseModel):
     initial_margin_fraction: StrictStr
     open_order_count: StrictInt
     pending_order_count: StrictInt
+    position_tied_order_count: StrictInt
     sign: StrictInt
     position: StrictStr
     avg_entry_price: StrictStr
     position_value: StrictStr
     unrealized_pnl: StrictStr
     realized_pnl: StrictStr
+    total_funding_paid_out: Optional[StrictStr] = None
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["market_id", "symbol", "initial_margin_fraction", "open_order_count", "pending_order_count", "sign", "position", "avg_entry_price", "position_value", "unrealized_pnl", "realized_pnl"]
+    __properties: ClassVar[List[str]] = ["market_id", "symbol", "initial_margin_fraction", "open_order_count", "pending_order_count", "position_tied_order_count", "sign", "position", "avg_entry_price", "position_value", "unrealized_pnl", "realized_pnl", "total_funding_paid_out"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,12 +105,14 @@ class AccountPosition(BaseModel):
             "initial_margin_fraction": obj.get("initial_margin_fraction"),
             "open_order_count": obj.get("open_order_count"),
             "pending_order_count": obj.get("pending_order_count"),
+            "position_tied_order_count": obj.get("position_tied_order_count"),
             "sign": obj.get("sign"),
             "position": obj.get("position"),
             "avg_entry_price": obj.get("avg_entry_price"),
             "position_value": obj.get("position_value"),
             "unrealized_pnl": obj.get("unrealized_pnl"),
-            "realized_pnl": obj.get("realized_pnl")
+            "realized_pnl": obj.get("realized_pnl"),
+            "total_funding_paid_out": obj.get("total_funding_paid_out")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

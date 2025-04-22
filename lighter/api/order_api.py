@@ -344,6 +344,7 @@ class OrderApi:
     @validate_call
     async def account_inactive_orders(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
         market_id: Optional[StrictInt] = None,
@@ -367,6 +368,8 @@ class OrderApi:
 
         Get account inactive orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param limit: (required)
@@ -402,6 +405,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_inactive_orders_serialize(
+            auth=auth,
             account_index=account_index,
             limit=limit,
             market_id=market_id,
@@ -432,6 +436,7 @@ class OrderApi:
     @validate_call
     async def account_inactive_orders_with_http_info(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
         market_id: Optional[StrictInt] = None,
@@ -455,6 +460,8 @@ class OrderApi:
 
         Get account inactive orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param limit: (required)
@@ -490,6 +497,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_inactive_orders_serialize(
+            auth=auth,
             account_index=account_index,
             limit=limit,
             market_id=market_id,
@@ -520,6 +528,7 @@ class OrderApi:
     @validate_call
     async def account_inactive_orders_without_preload_content(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
         market_id: Optional[StrictInt] = None,
@@ -543,6 +552,8 @@ class OrderApi:
 
         Get account inactive orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param limit: (required)
@@ -578,6 +589,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_inactive_orders_serialize(
+            auth=auth,
             account_index=account_index,
             limit=limit,
             market_id=market_id,
@@ -603,6 +615,7 @@ class OrderApi:
 
     def _account_inactive_orders_serialize(
         self,
+        auth,
         account_index,
         limit,
         market_id,
@@ -629,6 +642,10 @@ class OrderApi:
 
         # process the path parameters
         # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if account_index is not None:
             
             _query_params.append(('account_index', account_index))
@@ -692,6 +709,7 @@ class OrderApi:
     @validate_call
     async def account_orders(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         market_id: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
@@ -713,6 +731,8 @@ class OrderApi:
 
         Get account orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param market_id: (required)
@@ -744,6 +764,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_orders_serialize(
+            auth=auth,
             account_index=account_index,
             market_id=market_id,
             limit=limit,
@@ -772,6 +793,7 @@ class OrderApi:
     @validate_call
     async def account_orders_with_http_info(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         market_id: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
@@ -793,6 +815,8 @@ class OrderApi:
 
         Get account orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param market_id: (required)
@@ -824,6 +848,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_orders_serialize(
+            auth=auth,
             account_index=account_index,
             market_id=market_id,
             limit=limit,
@@ -852,6 +877,7 @@ class OrderApi:
     @validate_call
     async def account_orders_without_preload_content(
         self,
+        auth: StrictStr,
         account_index: StrictInt,
         market_id: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
@@ -873,6 +899,8 @@ class OrderApi:
 
         Get account orders
 
+        :param auth: (required)
+        :type auth: str
         :param account_index: (required)
         :type account_index: int
         :param market_id: (required)
@@ -904,6 +932,7 @@ class OrderApi:
         """ # noqa: E501
 
         _param = self._account_orders_serialize(
+            auth=auth,
             account_index=account_index,
             market_id=market_id,
             limit=limit,
@@ -927,6 +956,7 @@ class OrderApi:
 
     def _account_orders_serialize(
         self,
+        auth,
         account_index,
         market_id,
         limit,
@@ -951,6 +981,10 @@ class OrderApi:
 
         # process the path parameters
         # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if account_index is not None:
             
             _query_params.append(('account_index', account_index))
@@ -2340,6 +2374,7 @@ class OrderApi:
         self,
         sort_by: StrictStr,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         market_id: Optional[StrictInt] = None,
         account_index: Optional[StrictInt] = None,
         order_index: Optional[StrictInt] = None,
@@ -2368,6 +2403,8 @@ class OrderApi:
         :type sort_by: str
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param market_id:
         :type market_id: int
         :param account_index:
@@ -2407,6 +2444,7 @@ class OrderApi:
         _param = self._trades_serialize(
             sort_by=sort_by,
             limit=limit,
+            auth=auth,
             market_id=market_id,
             account_index=account_index,
             order_index=order_index,
@@ -2440,6 +2478,7 @@ class OrderApi:
         self,
         sort_by: StrictStr,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         market_id: Optional[StrictInt] = None,
         account_index: Optional[StrictInt] = None,
         order_index: Optional[StrictInt] = None,
@@ -2468,6 +2507,8 @@ class OrderApi:
         :type sort_by: str
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param market_id:
         :type market_id: int
         :param account_index:
@@ -2507,6 +2548,7 @@ class OrderApi:
         _param = self._trades_serialize(
             sort_by=sort_by,
             limit=limit,
+            auth=auth,
             market_id=market_id,
             account_index=account_index,
             order_index=order_index,
@@ -2540,6 +2582,7 @@ class OrderApi:
         self,
         sort_by: StrictStr,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         market_id: Optional[StrictInt] = None,
         account_index: Optional[StrictInt] = None,
         order_index: Optional[StrictInt] = None,
@@ -2568,6 +2611,8 @@ class OrderApi:
         :type sort_by: str
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param market_id:
         :type market_id: int
         :param account_index:
@@ -2607,6 +2652,7 @@ class OrderApi:
         _param = self._trades_serialize(
             sort_by=sort_by,
             limit=limit,
+            auth=auth,
             market_id=market_id,
             account_index=account_index,
             order_index=order_index,
@@ -2635,6 +2681,7 @@ class OrderApi:
         self,
         sort_by,
         limit,
+        auth,
         market_id,
         account_index,
         order_index,
@@ -2662,6 +2709,10 @@ class OrderApi:
 
         # process the path parameters
         # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if market_id is not None:
             
             _query_params.append(('market_id', market_id))

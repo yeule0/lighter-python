@@ -28,6 +28,8 @@ class Order(BaseModel):
     """ # noqa: E501
     order_index: StrictInt
     client_order_index: StrictInt
+    order_id: StrictStr
+    client_order_id: StrictStr
     market_index: StrictInt
     owner_account_index: StrictInt
     initial_base_amount: StrictStr
@@ -46,12 +48,17 @@ class Order(BaseModel):
     trigger_price: StrictStr
     order_expiry: StrictInt
     status: StrictStr
+    trigger_status: StrictStr
     trigger_time: StrictInt
     parent_order_index: StrictInt
+    parent_order_id: StrictStr
+    to_trigger_order_id_0: StrictStr
+    to_trigger_order_id_1: StrictStr
+    to_cancel_order_id_0: StrictStr
     block_height: StrictInt
     timestamp: StrictInt
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["order_index", "client_order_index", "market_index", "owner_account_index", "initial_base_amount", "price", "nonce", "remaining_base_amount", "is_ask", "base_size", "base_price", "filled_base_amount", "filled_quote_amount", "side", "type", "time_in_force", "reduce_only", "trigger_price", "order_expiry", "status", "trigger_time", "parent_order_index", "block_height", "timestamp"]
+    __properties: ClassVar[List[str]] = ["order_index", "client_order_index", "order_id", "client_order_id", "market_index", "owner_account_index", "initial_base_amount", "price", "nonce", "remaining_base_amount", "is_ask", "base_size", "base_price", "filled_base_amount", "filled_quote_amount", "side", "type", "time_in_force", "reduce_only", "trigger_price", "order_expiry", "status", "trigger_status", "trigger_time", "parent_order_index", "parent_order_id", "to_trigger_order_id_0", "to_trigger_order_id_1", "to_cancel_order_id_0", "block_height", "timestamp"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -70,8 +77,15 @@ class Order(BaseModel):
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired']):
-            raise ValueError("must be one of enum values ('in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired')")
+        if value not in set(['in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child']):
+            raise ValueError("must be one of enum values ('in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child')")
+        return value
+
+    @field_validator('trigger_status')
+    def trigger_status_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['na', 'ready', 'mark-price', 'twap', 'parent-order']):
+            raise ValueError("must be one of enum values ('na', 'ready', 'mark-price', 'twap', 'parent-order')")
         return value
 
     model_config = ConfigDict(
@@ -134,6 +148,8 @@ class Order(BaseModel):
         _obj = cls.model_validate({
             "order_index": obj.get("order_index"),
             "client_order_index": obj.get("client_order_index"),
+            "order_id": obj.get("order_id"),
+            "client_order_id": obj.get("client_order_id"),
             "market_index": obj.get("market_index"),
             "owner_account_index": obj.get("owner_account_index"),
             "initial_base_amount": obj.get("initial_base_amount"),
@@ -152,8 +168,13 @@ class Order(BaseModel):
             "trigger_price": obj.get("trigger_price"),
             "order_expiry": obj.get("order_expiry"),
             "status": obj.get("status"),
+            "trigger_status": obj.get("trigger_status"),
             "trigger_time": obj.get("trigger_time"),
             "parent_order_index": obj.get("parent_order_index"),
+            "parent_order_id": obj.get("parent_order_id"),
+            "to_trigger_order_id_0": obj.get("to_trigger_order_id_0"),
+            "to_trigger_order_id_1": obj.get("to_trigger_order_id_1"),
+            "to_cancel_order_id_0": obj.get("to_cancel_order_id_0"),
             "block_height": obj.get("block_height"),
             "timestamp": obj.get("timestamp")
         })

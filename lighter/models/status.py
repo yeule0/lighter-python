@@ -28,8 +28,9 @@ class Status(BaseModel):
     """ # noqa: E501
     status: StrictInt
     network_id: StrictInt
+    timestamp: StrictInt
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["status", "network_id"]
+    __properties: ClassVar[List[str]] = ["status", "network_id", "timestamp"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,7 +91,8 @@ class Status(BaseModel):
 
         _obj = cls.model_validate({
             "status": obj.get("status"),
-            "network_id": obj.get("network_id")
+            "network_id": obj.get("network_id"),
+            "timestamp": obj.get("timestamp")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

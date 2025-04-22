@@ -1,15 +1,15 @@
 import asyncio
 import logging
-import time
-from lighter import SignerClient
 import lighter
-import lighter.configuration
 
 logging.basicConfig(level=logging.DEBUG)
 
-
+# The API_KEY_PRIVATE_KEY provided belongs to a dummy account registered on Testnet.
+# It was generated using the setup_system.py script, and servers as an example.
 BASE_URL = "https://testnet.zklighter.elliot.ai"
-PRIVATE_KEY = "WALLET_PRIVATE_KEY"
+API_KEY_PRIVATE_KEY = "0xc0a06468a5bbc9a7b785065a8b227a37fdfa18e2b81d51b018cb03ddd99bfbef4b7551f0f0765639"
+ACCOUNT_INDEX = 595
+API_KEY_INDEX = 1
 
 
 def trim_exception(e: Exception) -> str:
@@ -17,42 +17,40 @@ def trim_exception(e: Exception) -> str:
 
 
 async def main():
-    api_client = lighter.ApiClient(
-        configuration=lighter.Configuration(host=BASE_URL)
+    api_client = lighter.ApiClient(configuration=lighter.Configuration(host=BASE_URL))
+
+    client = lighter.SignerClient(
+        url=BASE_URL,
+        private_key=API_KEY_PRIVATE_KEY,
+        account_index=ACCOUNT_INDEX,
+        api_key_index=API_KEY_INDEX,
     )
 
-    # assuring that client is created
-    account_created = False
-    new_account = False
-    while not account_created:
-        try:
-            client = SignerClient(url=BASE_URL, private_key=PRIVATE_KEY)
-            await client.set_account_index()
-            account_created = True
-            if new_account:
-                time.sleep(10)
-        except Exception as e:
-            new_account = True
-            print("Account not created yet", trim_exception(e))
-        time.sleep(2)
-        
-    print("Account Index: ", client.account_index)
+    err = client.check_client()
+    if err is not None:
+        print(f"CheckClient error: {trim_exception(err)}")
+        return
 
-    tx = await client.create_order(
+    # create order
+    tx, tx_hash, err = await client.create_order(
         market_index=0,
-        client_order_index=0,
-        base_amount=10000,
-        price=250000,
-        is_ask=False,
+        client_order_index=123,
+        base_amount=100000,
+        price=200000,
+        is_ask=True,
         order_type=lighter.SignerClient.ORDER_TYPE_LIMIT,
         time_in_force=lighter.SignerClient.ORDER_TIME_IN_FORCE_GOOD_TILL_TIME,
         reduce_only=0,
         trigger_price=0,
     )
-    print("Create Order Tx:", tx)
+    print(f"Create Order {tx=} {tx_hash=} {err=}")
+    if err is not None:
+        raise Exception(err)
 
-    auth = client.create_auth_token_with_expiry(SignerClient.DEFAULT_10_MIN_AUTH_EXPIRY)
-    print("Auth:", auth)
+    auth, err = client.create_auth_token_with_expiry(lighter.SignerClient.DEFAULT_10_MIN_AUTH_EXPIRY)
+    print(f"{auth=}")
+    if err is not None:
+        raise Exception(err)
 
     active_orders = await lighter.OrderApi(api_client).account_active_orders(
         account_index=client.account_index, market_id=0, auth=auth
@@ -61,16 +59,16 @@ async def main():
         print("No active orders")
         return
 
-    print("Active Orders:", active_orders.orders)
+    print(f"{active_orders.orders=}")
 
-    last_order_index = active_orders.orders[0].order_index
-
-    tx, response = await client.cancel_order(
-        market_index=0, order_index=last_order_index
+    # cancel order
+    tx, tx_hash, err = await client.cancel_order(
+        market_index=0,
+        order_index=123,
     )
-    print(
-        f"code: {response.code} msg: {response.message} l2Hash: {response.tx_hash} tx: {tx.to_json()}"
-    )
+    print(f"Cancel Order {tx=} {tx_hash=} {err=}")
+    if err is not None:
+        raise Exception(err)
 
     await client.close()
     await api_client.close()

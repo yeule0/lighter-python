@@ -21,7 +21,6 @@ from typing import Optional
 from typing_extensions import Annotated
 from lighter.models.account_api_keys import AccountApiKeys
 from lighter.models.account_pn_l import AccountPnL
-from lighter.models.accounts import Accounts
 from lighter.models.detailed_accounts import DetailedAccounts
 from lighter.models.fee_bucket import FeeBucket
 from lighter.models.public_pools import PublicPools
@@ -326,303 +325,6 @@ class AccountApi:
 
 
     @validate_call
-    async def accounts(
-        self,
-        limit: Annotated[int, Field(le=100, strict=True, ge=1)],
-        index: Optional[StrictInt] = None,
-        sort: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Accounts:
-        """accounts
-
-        Get accounts returns accounts by account index
-
-        :param limit: (required)
-        :type limit: int
-        :param index:
-        :type index: int
-        :param sort:
-        :type sort: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._accounts_serialize(
-            limit=limit,
-            index=index,
-            sort=sort,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Accounts",
-            '400': "ResultCode",
-        }
-        response_data = await self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        await response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    async def accounts_with_http_info(
-        self,
-        limit: Annotated[int, Field(le=100, strict=True, ge=1)],
-        index: Optional[StrictInt] = None,
-        sort: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Accounts]:
-        """accounts
-
-        Get accounts returns accounts by account index
-
-        :param limit: (required)
-        :type limit: int
-        :param index:
-        :type index: int
-        :param sort:
-        :type sort: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._accounts_serialize(
-            limit=limit,
-            index=index,
-            sort=sort,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Accounts",
-            '400': "ResultCode",
-        }
-        response_data = await self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        await response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    async def accounts_without_preload_content(
-        self,
-        limit: Annotated[int, Field(le=100, strict=True, ge=1)],
-        index: Optional[StrictInt] = None,
-        sort: Optional[StrictStr] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """accounts
-
-        Get accounts returns accounts by account index
-
-        :param limit: (required)
-        :type limit: int
-        :param index:
-        :type index: int
-        :param sort:
-        :type sort: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._accounts_serialize(
-            limit=limit,
-            index=index,
-            sort=sort,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Accounts",
-            '400': "ResultCode",
-        }
-        response_data = await self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _accounts_serialize(
-        self,
-        limit,
-        index,
-        sort,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, Union[str, bytes]] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        # process the query parameters
-        if index is not None:
-            
-            _query_params.append(('index', index))
-            
-        if limit is not None:
-            
-            _query_params.append(('limit', limit))
-            
-        if sort is not None:
-            
-            _query_params.append(('sort', sort))
-            
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/api/v1/accounts',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
     async def accounts_by_l1_address(
         self,
         l1_address: StrictStr,
@@ -889,7 +591,7 @@ class AccountApi:
     async def apikeys(
         self,
         account_index: StrictInt,
-        api_key_index: StrictInt,
+        api_key_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -909,7 +611,7 @@ class AccountApi:
 
         :param account_index: (required)
         :type account_index: int
-        :param api_key_index: (required)
+        :param api_key_index:
         :type api_key_index: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -961,7 +663,7 @@ class AccountApi:
     async def apikeys_with_http_info(
         self,
         account_index: StrictInt,
-        api_key_index: StrictInt,
+        api_key_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -981,7 +683,7 @@ class AccountApi:
 
         :param account_index: (required)
         :type account_index: int
-        :param api_key_index: (required)
+        :param api_key_index:
         :type api_key_index: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1033,7 +735,7 @@ class AccountApi:
     async def apikeys_without_preload_content(
         self,
         account_index: StrictInt,
-        api_key_index: StrictInt,
+        api_key_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1053,7 +755,7 @@ class AccountApi:
 
         :param account_index: (required)
         :type account_index: int
-        :param api_key_index: (required)
+        :param api_key_index:
         :type api_key_index: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1434,9 +1136,10 @@ class AccountApi:
         by: StrictStr,
         value: StrictStr,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
+        auth: Optional[StrictStr] = None,
         ignore_transfers: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -1467,6 +1170,8 @@ class AccountApi:
         :type end_timestamp: int
         :param count_back: (required)
         :type count_back: int
+        :param auth:
+        :type auth: str
         :param ignore_transfers:
         :type ignore_transfers: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -1498,6 +1203,7 @@ class AccountApi:
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
             count_back=count_back,
+            auth=auth,
             ignore_transfers=ignore_transfers,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1526,9 +1232,10 @@ class AccountApi:
         by: StrictStr,
         value: StrictStr,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
+        auth: Optional[StrictStr] = None,
         ignore_transfers: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -1559,6 +1266,8 @@ class AccountApi:
         :type end_timestamp: int
         :param count_back: (required)
         :type count_back: int
+        :param auth:
+        :type auth: str
         :param ignore_transfers:
         :type ignore_transfers: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -1590,6 +1299,7 @@ class AccountApi:
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
             count_back=count_back,
+            auth=auth,
             ignore_transfers=ignore_transfers,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1618,9 +1328,10 @@ class AccountApi:
         by: StrictStr,
         value: StrictStr,
         resolution: StrictStr,
-        start_timestamp: StrictInt,
-        end_timestamp: StrictInt,
+        start_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
+        end_timestamp: Annotated[int, Field(le=5000000000000, strict=True, ge=0)],
         count_back: StrictInt,
+        auth: Optional[StrictStr] = None,
         ignore_transfers: Optional[StrictBool] = None,
         _request_timeout: Union[
             None,
@@ -1651,6 +1362,8 @@ class AccountApi:
         :type end_timestamp: int
         :param count_back: (required)
         :type count_back: int
+        :param auth:
+        :type auth: str
         :param ignore_transfers:
         :type ignore_transfers: bool
         :param _request_timeout: timeout setting for this request. If one
@@ -1682,6 +1395,7 @@ class AccountApi:
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
             count_back=count_back,
+            auth=auth,
             ignore_transfers=ignore_transfers,
             _request_auth=_request_auth,
             _content_type=_content_type,
@@ -1708,6 +1422,7 @@ class AccountApi:
         start_timestamp,
         end_timestamp,
         count_back,
+        auth,
         ignore_transfers,
         _request_auth,
         _content_type,
@@ -1729,6 +1444,10 @@ class AccountApi:
 
         # process the path parameters
         # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if by is not None:
             
             _query_params.append(('by', by))
@@ -1791,13 +1510,12 @@ class AccountApi:
         )
 
 
-
-
     @validate_call
     async def public_pools(
         self,
         index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
@@ -1821,6 +1539,8 @@ class AccountApi:
         :type index: int
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param filter:
         :type filter: str
         :param account_index:
@@ -1850,6 +1570,7 @@ class AccountApi:
         _param = self._public_pools_serialize(
             index=index,
             limit=limit,
+            auth=auth,
             filter=filter,
             account_index=account_index,
             _request_auth=_request_auth,
@@ -1878,6 +1599,7 @@ class AccountApi:
         self,
         index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
@@ -1901,6 +1623,8 @@ class AccountApi:
         :type index: int
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param filter:
         :type filter: str
         :param account_index:
@@ -1930,6 +1654,7 @@ class AccountApi:
         _param = self._public_pools_serialize(
             index=index,
             limit=limit,
+            auth=auth,
             filter=filter,
             account_index=account_index,
             _request_auth=_request_auth,
@@ -1958,6 +1683,7 @@ class AccountApi:
         self,
         index: StrictInt,
         limit: Annotated[int, Field(le=100, strict=True, ge=1)],
+        auth: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
@@ -1981,6 +1707,8 @@ class AccountApi:
         :type index: int
         :param limit: (required)
         :type limit: int
+        :param auth:
+        :type auth: str
         :param filter:
         :type filter: str
         :param account_index:
@@ -2010,6 +1738,7 @@ class AccountApi:
         _param = self._public_pools_serialize(
             index=index,
             limit=limit,
+            auth=auth,
             filter=filter,
             account_index=account_index,
             _request_auth=_request_auth,
@@ -2033,6 +1762,7 @@ class AccountApi:
         self,
         index,
         limit,
+        auth,
         filter,
         account_index,
         _request_auth,
@@ -2055,6 +1785,10 @@ class AccountApi:
 
         # process the path parameters
         # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if filter is not None:
             
             _query_params.append(('filter', filter))

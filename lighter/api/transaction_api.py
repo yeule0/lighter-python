@@ -660,6 +660,8 @@ class TransactionApi:
     @validate_call
     async def deposit_history(
         self,
+        account_index: StrictInt,
+        auth: StrictStr,
         l1_address: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
@@ -680,6 +682,10 @@ class TransactionApi:
 
         Get deposit history
 
+        :param account_index: (required)
+        :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param l1_address: (required)
         :type l1_address: str
         :param cursor:
@@ -709,6 +715,8 @@ class TransactionApi:
         """ # noqa: E501
 
         _param = self._deposit_history_serialize(
+            account_index=account_index,
+            auth=auth,
             l1_address=l1_address,
             cursor=cursor,
             filter=filter,
@@ -736,6 +744,8 @@ class TransactionApi:
     @validate_call
     async def deposit_history_with_http_info(
         self,
+        account_index: StrictInt,
+        auth: StrictStr,
         l1_address: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
@@ -756,6 +766,10 @@ class TransactionApi:
 
         Get deposit history
 
+        :param account_index: (required)
+        :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param l1_address: (required)
         :type l1_address: str
         :param cursor:
@@ -785,6 +799,8 @@ class TransactionApi:
         """ # noqa: E501
 
         _param = self._deposit_history_serialize(
+            account_index=account_index,
+            auth=auth,
             l1_address=l1_address,
             cursor=cursor,
             filter=filter,
@@ -812,6 +828,8 @@ class TransactionApi:
     @validate_call
     async def deposit_history_without_preload_content(
         self,
+        account_index: StrictInt,
+        auth: StrictStr,
         l1_address: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
@@ -832,6 +850,10 @@ class TransactionApi:
 
         Get deposit history
 
+        :param account_index: (required)
+        :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param l1_address: (required)
         :type l1_address: str
         :param cursor:
@@ -861,6 +883,8 @@ class TransactionApi:
         """ # noqa: E501
 
         _param = self._deposit_history_serialize(
+            account_index=account_index,
+            auth=auth,
             l1_address=l1_address,
             cursor=cursor,
             filter=filter,
@@ -883,6 +907,8 @@ class TransactionApi:
 
     def _deposit_history_serialize(
         self,
+        account_index,
+        auth,
         l1_address,
         cursor,
         filter,
@@ -906,6 +932,14 @@ class TransactionApi:
 
         # process the path parameters
         # process the query parameters
+        if account_index is not None:
+            
+            _query_params.append(('account_index', account_index))
+            
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
         if l1_address is not None:
             
             _query_params.append(('l1_address', l1_address))
@@ -2654,6 +2688,7 @@ class TransactionApi:
     async def withdraw_history(
         self,
         account_index: StrictInt,
+        auth: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -2675,6 +2710,8 @@ class TransactionApi:
 
         :param account_index: (required)
         :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param cursor:
         :type cursor: str
         :param filter:
@@ -2703,6 +2740,7 @@ class TransactionApi:
 
         _param = self._withdraw_history_serialize(
             account_index=account_index,
+            auth=auth,
             cursor=cursor,
             filter=filter,
             _request_auth=_request_auth,
@@ -2730,6 +2768,7 @@ class TransactionApi:
     async def withdraw_history_with_http_info(
         self,
         account_index: StrictInt,
+        auth: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -2751,6 +2790,8 @@ class TransactionApi:
 
         :param account_index: (required)
         :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param cursor:
         :type cursor: str
         :param filter:
@@ -2779,6 +2820,7 @@ class TransactionApi:
 
         _param = self._withdraw_history_serialize(
             account_index=account_index,
+            auth=auth,
             cursor=cursor,
             filter=filter,
             _request_auth=_request_auth,
@@ -2806,6 +2848,7 @@ class TransactionApi:
     async def withdraw_history_without_preload_content(
         self,
         account_index: StrictInt,
+        auth: StrictStr,
         cursor: Optional[StrictStr] = None,
         filter: Optional[StrictStr] = None,
         _request_timeout: Union[
@@ -2827,6 +2870,8 @@ class TransactionApi:
 
         :param account_index: (required)
         :type account_index: int
+        :param auth: (required)
+        :type auth: str
         :param cursor:
         :type cursor: str
         :param filter:
@@ -2855,6 +2900,7 @@ class TransactionApi:
 
         _param = self._withdraw_history_serialize(
             account_index=account_index,
+            auth=auth,
             cursor=cursor,
             filter=filter,
             _request_auth=_request_auth,
@@ -2877,6 +2923,7 @@ class TransactionApi:
     def _withdraw_history_serialize(
         self,
         account_index,
+        auth,
         cursor,
         filter,
         _request_auth,
@@ -2902,6 +2949,10 @@ class TransactionApi:
         if account_index is not None:
             
             _query_params.append(('account_index', account_index))
+            
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
             
         if cursor is not None:
             
