@@ -17,9 +17,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from lighter.models.account_market_stats import AccountMarketStats
 from lighter.models.account_position import AccountPosition
 from lighter.models.public_pool_info import PublicPoolInfo
 from lighter.models.public_pool_share import PublicPoolShare
@@ -42,13 +41,15 @@ class DetailedAccount(BaseModel):
     collateral: StrictStr
     name: StrictStr
     description: StrictStr
+    can_invite: StrictBool
+    referral_points_percentage: StrictStr
+    max_referral_usage_limit: StrictInt
     positions: List[AccountPosition]
     total_asset_value: StrictStr
-    market_stats: List[AccountMarketStats]
     pool_info: PublicPoolInfo
     shares: List[PublicPoolShare]
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["code", "message", "account_type", "index", "l1_address", "cancel_all_time", "total_order_count", "pending_order_count", "status", "collateral", "name", "description", "positions", "total_asset_value", "market_stats", "pool_info", "shares"]
+    __properties: ClassVar[List[str]] = ["code", "message", "account_type", "index", "l1_address", "cancel_all_time", "total_order_count", "pending_order_count", "status", "collateral", "name", "description", "can_invite", "referral_points_percentage", "max_referral_usage_limit", "positions", "total_asset_value", "pool_info", "shares"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,13 +99,6 @@ class DetailedAccount(BaseModel):
                 if _item:
                     _items.append(_item.to_dict())
             _dict['positions'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in market_stats (list)
-        _items = []
-        if self.market_stats:
-            for _item in self.market_stats:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict['market_stats'] = _items
         # override the default output from pydantic by calling `to_dict()` of pool_info
         if self.pool_info:
             _dict['pool_info'] = self.pool_info.to_dict()
@@ -144,9 +138,11 @@ class DetailedAccount(BaseModel):
             "collateral": obj.get("collateral"),
             "name": obj.get("name"),
             "description": obj.get("description"),
+            "can_invite": obj.get("can_invite"),
+            "referral_points_percentage": obj.get("referral_points_percentage"),
+            "max_referral_usage_limit": obj.get("max_referral_usage_limit"),
             "positions": [AccountPosition.from_dict(_item) for _item in obj["positions"]] if obj.get("positions") is not None else None,
             "total_asset_value": obj.get("total_asset_value"),
-            "market_stats": [AccountMarketStats.from_dict(_item) for _item in obj["market_stats"]] if obj.get("market_stats") is not None else None,
             "pool_info": PublicPoolInfo.from_dict(obj["pool_info"]) if obj.get("pool_info") is not None else None,
             "shares": [PublicPoolShare.from_dict(_item) for _item in obj["shares"]] if obj.get("shares") is not None else None
         })

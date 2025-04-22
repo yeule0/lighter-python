@@ -28,8 +28,12 @@ class PnLEntry(BaseModel):
     """ # noqa: E501
     timestamp: StrictInt
     value: Union[StrictFloat, StrictInt]
+    trade_pnl: Union[StrictFloat, StrictInt]
+    pool_pnl: Union[StrictFloat, StrictInt]
+    inflow: Union[StrictFloat, StrictInt]
+    outflow: Union[StrictFloat, StrictInt]
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["timestamp", "value"]
+    __properties: ClassVar[List[str]] = ["timestamp", "value", "trade_pnl", "pool_pnl", "inflow", "outflow"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,7 +94,11 @@ class PnLEntry(BaseModel):
 
         _obj = cls.model_validate({
             "timestamp": obj.get("timestamp"),
-            "value": obj.get("value")
+            "value": obj.get("value"),
+            "trade_pnl": obj.get("trade_pnl"),
+            "pool_pnl": obj.get("pool_pnl"),
+            "inflow": obj.get("inflow"),
+            "outflow": obj.get("outflow")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

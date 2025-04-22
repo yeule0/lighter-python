@@ -130,7 +130,7 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get account active orders"
+        "description": "Get account active orders. `auth` can be generated using the SDK."
       }
     },
     "/api/v1/accountInactiveOrders": {
@@ -152,6 +152,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "account_index",
             "in": "query",
@@ -203,7 +209,7 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get account active orders"
+        "description": "Get account inactive orders"
       }
     },
     "/api/v1/accountOrders": {
@@ -225,6 +231,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "account_index",
             "in": "query",
@@ -262,60 +274,6 @@
           "multipart/form-data"
         ],
         "description": "Get account orders"
-      }
-    },
-    "/api/v1/accountPendingTxs": {
-      "get": {
-        "summary": "accountPendingTxs",
-        "operationId": "accountPendingTxs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Txs"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "by",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "enum": [
-              "account_index"
-            ]
-          },
-          {
-            "name": "value",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "types",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            }
-          }
-        ],
-        "tags": [
-          "transaction"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "description": "Get pending transactions of a specific account"
       }
     },
     "/api/v1/accountTxs": {
@@ -388,62 +346,6 @@
         "description": "Get transactions of a specific account"
       }
     },
-    "/api/v1/accounts": {
-      "get": {
-        "summary": "accounts",
-        "operationId": "accounts",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Accounts"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "index",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
-            "minimum": 1,
-            "maximum": 100
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "asc",
-              "desc"
-            ],
-            "default": "asc"
-          }
-        ],
-        "tags": [
-          "account"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "description": "Get accounts returns accounts by account index"
-      }
-    },
     "/api/v1/accountsByL1Address": {
       "get": {
         "summary": "accountsByL1Address",
@@ -508,7 +410,7 @@
           {
             "name": "api_key_index",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "integer",
             "format": "uint8",
             "default": "255"
@@ -520,7 +422,7 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get account api key"
+        "description": "Get account api key. Set `api_key_index` to 255 to retrieve all api keys associated with the account."
       }
     },
     "/api/v1/block": {
@@ -714,14 +616,18 @@
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "end_timestamp",
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "count_back",
@@ -791,6 +697,19 @@
           }
         },
         "parameters": [
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "l1_address",
             "in": "query",
@@ -924,14 +843,18 @@
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "end_timestamp",
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "count_back",
@@ -948,65 +871,6 @@
           "multipart/form-data"
         ],
         "description": "Get fundings"
-      }
-    },
-    "/api/v1/isWhitelisted": {
-      "get": {
-        "summary": "isWhitelisted",
-        "operationId": "isWhitelisted",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/IsWhitelisted"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "l1_address",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "account"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "description": "Get is account whitelisted"
-      }
-    },
-    "/api/v1/layer2BasicInfo": {
-      "get": {
-        "summary": "layer2BasicInfo",
-        "operationId": "layer2BasicInfo",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Layer2BasicInfo"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "tags": [
-          "info"
-        ],
-        "description": "Get zklighter general info, including contract address, and count of transactions and active users"
       }
     },
     "/api/v1/nextNonce": {
@@ -1049,7 +913,7 @@
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get next nonce for a specific account"
+        "description": "Get next nonce for a specific account and api key"
       }
     },
     "/api/v1/orderBookDetails": {
@@ -1171,51 +1035,6 @@
         "description": "Get order books metadata.<hr>**Response Description:**<br><br>1) **Taker and maker fees** are in percentage.<br>2) **Min base amount:** The amount of base token that can be traded in a single order.<br>3) **Min quote amount:** The amount of quote token that can be traded in a single order.<br>4) **Supported size decimals:** The number of decimal places that can be used for the size of the order.<br>5) **Supported price decimals:** The number of decimal places that can be used for the price of the order.<br>6) **Supported quote decimals:** Size Decimals + Quote Decimals."
       }
     },
-    "/api/v1/pendingTxs": {
-      "get": {
-        "summary": "pendingTxs",
-        "operationId": "pendingTxs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Txs"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "index",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
-            "minimum": 1,
-            "maximum": 100
-          }
-        ],
-        "tags": [
-          "transaction"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "description": "Get pending transactions"
-      }
-    },
     "/api/v1/pnl": {
       "get": {
         "summary": "pnl",
@@ -1235,6 +1054,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "by",
             "in": "query",
@@ -1269,14 +1094,18 @@
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "end_timestamp",
             "in": "query",
             "required": true,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 5000000000000
           },
           {
             "name": "count_back",
@@ -1322,6 +1151,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "filter",
             "in": "query",
@@ -1505,6 +1340,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "market_id",
             "in": "query",
@@ -1743,6 +1584,12 @@
             "format": "int64"
           },
           {
+            "name": "auth",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "cursor",
             "in": "query",
             "required": false,
@@ -1882,54 +1729,6 @@
         "api_keys"
       ]
     },
-    "AccountMarketStats": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "example": "1"
-        },
-        "daily_trades_count": {
-          "type": "integer",
-          "format": "int64",
-          "example": "68"
-        },
-        "daily_base_token_volume": {
-          "type": "number",
-          "format": "double",
-          "example": "235.25"
-        },
-        "daily_quote_token_volume": {
-          "type": "number",
-          "format": "double",
-          "example": "93566.25"
-        }
-      },
-      "title": "AccountMarketStats",
-      "required": [
-        "market_id",
-        "daily_trades_count",
-        "daily_base_token_volume",
-        "daily_quote_token_volume"
-      ]
-    },
-    "AccountMetadata": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "title": "AccountMetadata",
-      "required": [
-        "name",
-        "description"
-      ]
-    },
     "AccountPnL": {
       "type": "object",
       "properties": {
@@ -1985,6 +1784,11 @@
           "format": "int64",
           "example": "3"
         },
+        "position_tied_order_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "3"
+        },
         "sign": {
           "type": "integer",
           "format": "int32",
@@ -2009,6 +1813,10 @@
         "realized_pnl": {
           "type": "string",
           "example": "2.000000"
+        },
+        "total_funding_paid_out": {
+          "type": "string",
+          "example": "34.2"
         }
       },
       "title": "AccountPosition",
@@ -2018,80 +1826,13 @@
         "initial_margin_fraction",
         "open_order_count",
         "pending_order_count",
+        "position_tied_order_count",
         "sign",
         "position",
         "avg_entry_price",
         "position_value",
         "unrealized_pnl",
         "realized_pnl"
-      ]
-    },
-    "AccountStats": {
-      "type": "object",
-      "properties": {
-        "collateral": {
-          "type": "string",
-          "example": "199955"
-        },
-        "portfolio_value": {
-          "type": "string",
-          "example": "199955"
-        },
-        "leverage": {
-          "type": "string",
-          "example": "1.0"
-        },
-        "available_balance": {
-          "type": "string",
-          "example": "199955"
-        },
-        "margin_usage": {
-          "type": "string",
-          "example": "0.0"
-        },
-        "buying_power": {
-          "type": "string",
-          "example": "199955"
-        }
-      },
-      "title": "AccountStats",
-      "required": [
-        "collateral",
-        "portfolio_value",
-        "leverage",
-        "available_balance",
-        "margin_usage",
-        "buying_power"
-      ]
-    },
-    "Accounts": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "example": "200"
-        },
-        "message": {
-          "type": "string"
-        },
-        "total": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "accounts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Account"
-          }
-        }
-      },
-      "title": "Accounts",
-      "required": [
-        "code",
-        "total",
-        "accounts"
       ]
     },
     "ApiKey": {
@@ -2223,29 +1964,6 @@
         "blocks"
       ]
     },
-    "BridgeSupportedNetwork": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "Arbitrum"
-        },
-        "chain_id": {
-          "type": "string",
-          "example": "4164"
-        },
-        "explorer": {
-          "type": "string",
-          "example": "https://arbiscan.io/"
-        }
-      },
-      "title": "BridgeSupportedNetwork",
-      "required": [
-        "name",
-        "chain_id",
-        "explorer"
-      ]
-    },
     "Candlestick": {
       "type": "object",
       "properties": {
@@ -2331,24 +2049,6 @@
         "candlesticks"
       ]
     },
-    "ContractAddress": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "1"
-        },
-        "address": {
-          "type": "string",
-          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
-        }
-      },
-      "title": "ContractAddress",
-      "required": [
-        "name",
-        "address"
-      ]
-    },
     "CurrentHeight": {
       "type": "object",
       "properties": {
@@ -2371,14 +2071,25 @@
         "height"
       ]
     },
-    "Cursor": {
+    "DailyReturn": {
       "type": "object",
       "properties": {
-        "next_cursor": {
-          "type": "string"
+        "timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1640995200"
+        },
+        "daily_return": {
+          "type": "number",
+          "format": "double",
+          "example": "0.0001"
         }
       },
-      "title": "Cursor"
+      "title": "DailyReturn",
+      "required": [
+        "timestamp",
+        "daily_return"
+      ]
     },
     "DepositHistory": {
       "type": "object",
@@ -2428,8 +2139,13 @@
           "enum": [
             "failed",
             "pending",
-            "completed"
+            "completed",
+            "claimable"
           ]
+        },
+        "l1_tx_hash": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
         }
       },
       "title": "DepositHistoryItem",
@@ -2437,7 +2153,8 @@
         "id",
         "amount",
         "timestamp",
-        "status"
+        "status",
+        "l1_tx_hash"
       ]
     },
     "DetailedAccount": {
@@ -2495,6 +2212,17 @@
         "description": {
           "type": "string"
         },
+        "can_invite": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "referral_points_percentage": {
+          "type": "string"
+        },
+        "max_referral_usage_limit": {
+          "type": "integer",
+          "format": "int32"
+        },
         "positions": {
           "type": "array",
           "items": {
@@ -2504,12 +2232,6 @@
         "total_asset_value": {
           "type": "string",
           "example": "19995"
-        },
-        "market_stats": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AccountMarketStats"
-          }
         },
         "pool_info": {
           "$ref": "#/definitions/PublicPoolInfo"
@@ -2534,9 +2256,11 @@
         "collateral",
         "name",
         "description",
+        "can_invite",
+        "referral_points_percentage",
+        "max_referral_usage_limit",
         "positions",
         "total_asset_value",
-        "market_stats",
         "pool_info",
         "shares"
       ]
@@ -2569,68 +2293,6 @@
         "code",
         "total",
         "accounts"
-      ]
-    },
-    "DetailedCandlestick": {
-      "type": "object",
-      "properties": {
-        "timestamp": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1640995200"
-        },
-        "open": {
-          "type": "number",
-          "format": "double",
-          "example": "3024.66"
-        },
-        "high": {
-          "type": "number",
-          "format": "double",
-          "example": "3034.66"
-        },
-        "low": {
-          "type": "number",
-          "format": "double",
-          "example": "3014.66"
-        },
-        "close": {
-          "type": "number",
-          "format": "double",
-          "example": "3024.66"
-        },
-        "volume0": {
-          "type": "number",
-          "format": "double",
-          "example": "235.25"
-        },
-        "volume1": {
-          "type": "number",
-          "format": "double",
-          "example": "93566.25"
-        },
-        "last_trade_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "trade_count": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1503241"
-        }
-      },
-      "title": "DetailedCandlestick",
-      "required": [
-        "timestamp",
-        "open",
-        "high",
-        "low",
-        "close",
-        "volume0",
-        "volume1",
-        "last_trade_id",
-        "trade_count"
       ]
     },
     "EnrichedTx": {
@@ -2873,213 +2535,6 @@
         "fundings"
       ]
     },
-    "IsWhitelisted": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "example": "200"
-        },
-        "message": {
-          "type": "string"
-        },
-        "whitelisted": {
-          "type": "boolean",
-          "format": "boolean"
-        },
-        "deposit_amount_left": {
-          "type": "string"
-        }
-      },
-      "title": "IsWhitelisted",
-      "required": [
-        "code",
-        "whitelisted",
-        "deposit_amount_left"
-      ]
-    },
-    "L1ProviderInfo": {
-      "type": "object",
-      "properties": {
-        "chainId": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "networkId": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "latestBlockNumber": {
-          "type": "integer",
-          "format": "int64",
-          "example": "45434"
-        },
-        "NetworkRpc": {
-          "type": "string"
-        }
-      },
-      "title": "L1ProviderInfo",
-      "required": [
-        "chainId",
-        "networkId",
-        "latestBlockNumber",
-        "NetworkRpc"
-      ]
-    },
-    "Layer2BasicInfo": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "example": "200"
-        },
-        "message": {
-          "type": "string"
-        },
-        "block_committed": {
-          "type": "integer",
-          "format": "int64",
-          "example": "45434"
-        },
-        "block_verified": {
-          "type": "integer",
-          "format": "int64",
-          "example": "45434"
-        },
-        "total_transaction_count": {
-          "type": "integer",
-          "format": "int64",
-          "example": "75434"
-        }
-      },
-      "title": "Layer2BasicInfo",
-      "required": [
-        "code",
-        "block_committed",
-        "block_verified",
-        "total_transaction_count"
-      ]
-    },
-    "Liquidation": {
-      "type": "object",
-      "properties": {
-        "liquidation_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "account_index": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "liquidation_type": {
-          "type": "integer",
-          "format": "uint8",
-          "example": "1"
-        },
-        "portfolio_value": {
-          "type": "string",
-          "example": "1"
-        },
-        "margin_requirement": {
-          "type": "string",
-          "example": "1"
-        }
-      },
-      "title": "Liquidation",
-      "required": [
-        "liquidation_id",
-        "account_index",
-        "liquidation_type",
-        "portfolio_value",
-        "margin_requirement"
-      ]
-    },
-    "MarketInfo": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "example": "1"
-        },
-        "index_price": {
-          "type": "string",
-          "example": "3024.66"
-        },
-        "mark_price": {
-          "type": "string",
-          "example": "3024.66"
-        },
-        "open_interest": {
-          "type": "string",
-          "example": "235.25"
-        },
-        "last_trade_price": {
-          "type": "string",
-          "example": "3024.66"
-        },
-        "current_funding_rate": {
-          "type": "string",
-          "example": "0.0001"
-        },
-        "funding_rate": {
-          "type": "string",
-          "example": "0.0001"
-        },
-        "funding_timestamp": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1640995200"
-        },
-        "daily_base_token_volume": {
-          "type": "number",
-          "format": "double",
-          "example": "235.25"
-        },
-        "daily_quote_token_volume": {
-          "type": "number",
-          "format": "double",
-          "example": "93566.25"
-        },
-        "daily_price_low": {
-          "type": "number",
-          "format": "double",
-          "example": "3014.66"
-        },
-        "daily_price_high": {
-          "type": "number",
-          "format": "double",
-          "example": "3024.66"
-        },
-        "daily_price_change": {
-          "type": "number",
-          "format": "double",
-          "example": "3.66"
-        }
-      },
-      "title": "MarketInfo",
-      "required": [
-        "market_id",
-        "index_price",
-        "mark_price",
-        "open_interest",
-        "last_trade_price",
-        "current_funding_rate",
-        "funding_rate",
-        "funding_timestamp",
-        "daily_base_token_volume",
-        "daily_quote_token_volume",
-        "daily_price_low",
-        "daily_price_high",
-        "daily_price_change"
-      ]
-    },
     "NextNonce": {
       "type": "object",
       "properties": {
@@ -3114,6 +2569,14 @@
         "client_order_index": {
           "type": "integer",
           "format": "int64",
+          "example": "234"
+        },
+        "order_id": {
+          "type": "string",
+          "example": "1"
+        },
+        "client_order_id": {
+          "type": "string",
           "example": "234"
         },
         "market_index": {
@@ -3227,7 +2690,20 @@
             "canceled-too-much-slippage",
             "canceled-not-enough-liquidity",
             "canceled-self-trade",
-            "canceled-expired"
+            "canceled-expired",
+            "canceled-oco",
+            "canceled-child"
+          ]
+        },
+        "trigger_status": {
+          "type": "string",
+          "example": "twap",
+          "enum": [
+            "na",
+            "ready",
+            "mark-price",
+            "twap",
+            "parent-order"
           ]
         },
         "trigger_time": {
@@ -3238,6 +2714,22 @@
         "parent_order_index": {
           "type": "integer",
           "format": "int64",
+          "example": "1"
+        },
+        "parent_order_id": {
+          "type": "string",
+          "example": "1"
+        },
+        "to_trigger_order_id_0": {
+          "type": "string",
+          "example": "1"
+        },
+        "to_trigger_order_id_1": {
+          "type": "string",
+          "example": "1"
+        },
+        "to_cancel_order_id_0": {
+          "type": "string",
           "example": "1"
         },
         "block_height": {
@@ -3255,6 +2747,8 @@
       "required": [
         "order_index",
         "client_order_index",
+        "order_id",
+        "client_order_id",
         "market_index",
         "owner_account_index",
         "initial_base_amount",
@@ -3273,8 +2767,13 @@
         "trigger_price",
         "order_expiry",
         "status",
+        "trigger_status",
         "trigger_time",
         "parent_order_index",
+        "parent_order_id",
+        "to_trigger_order_id_0",
+        "to_trigger_order_id_1",
+        "to_cancel_order_id_0",
         "block_height",
         "timestamp"
       ]
@@ -3348,43 +2847,6 @@
         "supported_size_decimals",
         "supported_price_decimals",
         "supported_quote_decimals"
-      ]
-    },
-    "OrderBookDepth": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "example": "200"
-        },
-        "message": {
-          "type": "string"
-        },
-        "asks": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PriceLevel"
-          }
-        },
-        "bids": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/PriceLevel"
-          }
-        },
-        "offset": {
-          "type": "integer",
-          "format": "int64",
-          "example": "0"
-        }
-      },
-      "title": "OrderBookDepth",
-      "required": [
-        "code",
-        "asks",
-        "bids",
-        "offset"
       ]
     },
     "OrderBookDetail": {
@@ -3730,80 +3192,36 @@
           "type": "number",
           "format": "double",
           "example": "12.0"
+        },
+        "trade_pnl": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "pool_pnl": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "inflow": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "outflow": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
         }
       },
       "title": "PnLEntry",
       "required": [
         "timestamp",
-        "value"
-      ]
-    },
-    "PositionFunding": {
-      "type": "object",
-      "properties": {
-        "timestamp": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1640995200"
-        },
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "example": "1"
-        },
-        "funding_id": {
-          "type": "integer",
-          "format": "int64",
-          "example": "1"
-        },
-        "change": {
-          "type": "string",
-          "example": "1"
-        },
-        "rate": {
-          "type": "string",
-          "example": "1"
-        },
-        "position_size": {
-          "type": "string",
-          "example": "1"
-        },
-        "position_side": {
-          "type": "string",
-          "example": "long",
-          "enum": [
-            "long",
-            "short"
-          ]
-        }
-      },
-      "title": "PositionFunding",
-      "required": [
-        "timestamp",
-        "market_id",
-        "funding_id",
-        "change",
-        "rate",
-        "position_size",
-        "position_side"
-      ]
-    },
-    "PriceLevel": {
-      "type": "object",
-      "properties": {
-        "price": {
-          "type": "string",
-          "example": "3024.66"
-        },
-        "size": {
-          "type": "string",
-          "example": "0.1"
-        }
-      },
-      "title": "PriceLevel",
-      "required": [
-        "price",
-        "size"
+        "value",
+        "trade_pnl",
+        "pool_pnl",
+        "inflow",
+        "outflow"
       ]
     },
     "PublicPool": {
@@ -3861,6 +3279,17 @@
         "description": {
           "type": "string"
         },
+        "can_invite": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "referral_points_percentage": {
+          "type": "string"
+        },
+        "max_referral_usage_limit": {
+          "type": "integer",
+          "format": "int32"
+        },
         "total_asset_value": {
           "type": "string",
           "example": "19995"
@@ -3885,9 +3314,11 @@
         "collateral",
         "name",
         "description",
+        "can_invite",
+        "referral_points_percentage",
+        "max_referral_usage_limit",
         "total_asset_value",
-        "pool_info",
-        "account_share"
+        "pool_info"
       ]
     },
     "PublicPoolInfo": {
@@ -3915,6 +3346,32 @@
           "type": "integer",
           "format": "int64",
           "example": "20000"
+        },
+        "share_price_1d": {
+          "type": "number",
+          "format": "double",
+          "example": "0.0001"
+        },
+        "share_price_7d": {
+          "type": "number",
+          "format": "double",
+          "example": "0.0001"
+        },
+        "share_price_30d": {
+          "type": "number",
+          "format": "double",
+          "example": "0.0001"
+        },
+        "annual_percentage_yield": {
+          "type": "number",
+          "format": "double",
+          "example": "20.5000"
+        },
+        "daily_returns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DailyReturn"
+          }
         }
       },
       "title": "PublicPoolInfo",
@@ -3923,7 +3380,12 @@
         "operator_fee",
         "min_operator_share_rate",
         "total_shares",
-        "operator_shares"
+        "operator_shares",
+        "share_price_1d",
+        "share_price_7d",
+        "share_price_30d",
+        "annual_percentage_yield",
+        "daily_returns"
       ]
     },
     "PublicPoolShare": {
@@ -3978,740 +3440,6 @@
         "code",
         "total",
         "public_pools"
-      ]
-    },
-    "ReqGetAccount": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "index",
-            "l1_address"
-          ]
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetAccount",
-      "required": [
-        "by",
-        "value"
-      ]
-    },
-    "ReqGetAccountActiveOrders": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "auth": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetAccountActiveOrders",
-      "required": [
-        "account_index",
-        "market_id",
-        "auth"
-      ]
-    },
-    "ReqGetAccountApiKeys": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "api_key_index": {
-          "type": "integer",
-          "format": "uint8",
-          "default": "255"
-        }
-      },
-      "title": "ReqGetAccountApiKeys",
-      "required": [
-        "account_index",
-        "api_key_index"
-      ]
-    },
-    "ReqGetAccountByL1Address": {
-      "type": "object",
-      "properties": {
-        "l1_address": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetAccountByL1Address",
-      "required": [
-        "l1_address"
-      ]
-    },
-    "ReqGetAccountInactiveOrders": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "default": "255"
-        },
-        "ask_filter": {
-          "type": "integer",
-          "format": "int8",
-          "default": "-1"
-        },
-        "between_timestamps": {
-          "type": "string"
-        },
-        "cursor": {
-          "type": "string"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetAccountInactiveOrders",
-      "required": [
-        "account_index",
-        "limit"
-      ]
-    },
-    "ReqGetAccountOrders": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "cursor": {
-          "type": "string"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetAccountOrders",
-      "required": [
-        "account_index",
-        "market_id",
-        "limit"
-      ]
-    },
-    "ReqGetAccountPendingTxs": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "account_index"
-          ]
-        },
-        "value": {
-          "type": "string"
-        },
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "uint8"
-          }
-        }
-      },
-      "title": "ReqGetAccountPendingTxs"
-    },
-    "ReqGetAccountPnL": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "index"
-          ]
-        },
-        "value": {
-          "type": "string"
-        },
-        "resolution": {
-          "type": "string",
-          "enum": [
-            "1m",
-            "5m",
-            "15m",
-            "1h",
-            "4h",
-            "1d"
-          ]
-        },
-        "start_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "end_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "count_back": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "ignore_transfers": {
-          "type": "boolean",
-          "format": "boolean",
-          "default": "false"
-        }
-      },
-      "title": "ReqGetAccountPnL",
-      "required": [
-        "by",
-        "value",
-        "resolution",
-        "start_timestamp",
-        "end_timestamp",
-        "count_back"
-      ]
-    },
-    "ReqGetAccountTxs": {
-      "type": "object",
-      "properties": {
-        "index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        },
-        "by": {
-          "type": "string",
-          "enum": [
-            "account_index"
-          ]
-        },
-        "value": {
-          "type": "string"
-        },
-        "types": {
-          "type": "array",
-          "items": {
-            "type": "integer",
-            "format": "uint8"
-          }
-        }
-      },
-      "title": "ReqGetAccountTxs"
-    },
-    "ReqGetBlock": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "commitment",
-            "height"
-          ]
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetBlock",
-      "required": [
-        "by",
-        "value"
-      ]
-    },
-    "ReqGetBlockTxs": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "block_height",
-            "block_commitment"
-          ]
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetBlockTxs",
-      "required": [
-        "by",
-        "value"
-      ]
-    },
-    "ReqGetByAccount": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "account_index"
-          ]
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetByAccount",
-      "required": [
-        "by",
-        "value"
-      ]
-    },
-    "ReqGetCandlesticks": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "resolution": {
-          "type": "string",
-          "enum": [
-            "1m",
-            "5m",
-            "15m",
-            "1h",
-            "4h",
-            "1d"
-          ]
-        },
-        "start_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "end_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "count_back": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "set_timestamp_to_end": {
-          "type": "boolean",
-          "format": "boolean",
-          "default": "false"
-        }
-      },
-      "title": "ReqGetCandlesticks",
-      "required": [
-        "market_id",
-        "resolution",
-        "start_timestamp",
-        "end_timestamp",
-        "count_back"
-      ]
-    },
-    "ReqGetDepositHistory": {
-      "type": "object",
-      "properties": {
-        "l1_address": {
-          "type": "string"
-        },
-        "cursor": {
-          "type": "string"
-        },
-        "filter": {
-          "type": "string",
-          "enum": [
-            "all",
-            "pending",
-            "claimable"
-          ]
-        }
-      },
-      "title": "ReqGetDepositHistory",
-      "required": [
-        "l1_address"
-      ]
-    },
-    "ReqGetExchangeStats": {
-      "type": "object",
-      "title": "ReqGetExchangeStats"
-    },
-    "ReqGetFeeBucket": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "ReqGetFeeBucket",
-      "required": [
-        "account_index"
-      ]
-    },
-    "ReqGetFundings": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "resolution": {
-          "type": "string",
-          "enum": [
-            "1h"
-          ]
-        },
-        "start_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "end_timestamp": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "count_back": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "ReqGetFundings",
-      "required": [
-        "market_id",
-        "resolution",
-        "start_timestamp",
-        "end_timestamp",
-        "count_back"
-      ]
-    },
-    "ReqGetL1Tx": {
-      "type": "object",
-      "properties": {
-        "hash": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetL1Tx",
-      "required": [
-        "hash"
-      ]
-    },
-    "ReqGetLatestDeposit": {
-      "type": "object",
-      "properties": {
-        "l1_address": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetLatestDeposit",
-      "required": [
-        "l1_address"
-      ]
-    },
-    "ReqGetNextNonce": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "api_key_index": {
-          "type": "integer",
-          "format": "uint8"
-        }
-      },
-      "title": "ReqGetNextNonce",
-      "required": [
-        "account_index",
-        "api_key_index"
-      ]
-    },
-    "ReqGetOrderBookDetails": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "default": "255"
-        }
-      },
-      "title": "ReqGetOrderBookDetails"
-    },
-    "ReqGetOrderBookOrders": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetOrderBookOrders",
-      "required": [
-        "market_id",
-        "limit"
-      ]
-    },
-    "ReqGetOrderBooks": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "default": "255"
-        }
-      },
-      "title": "ReqGetOrderBooks"
-    },
-    "ReqGetPublicPools": {
-      "type": "object",
-      "properties": {
-        "filter": {
-          "type": "string",
-          "enum": [
-            "all",
-            "user",
-            "protocol",
-            "account_index"
-          ]
-        },
-        "index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        },
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "title": "ReqGetPublicPools",
-      "required": [
-        "index",
-        "limit"
-      ]
-    },
-    "ReqGetRangeWithCursor": {
-      "type": "object",
-      "properties": {
-        "cursor": {
-          "type": "string"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetRangeWithCursor",
-      "required": [
-        "limit"
-      ]
-    },
-    "ReqGetRangeWithIndex": {
-      "type": "object",
-      "properties": {
-        "index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetRangeWithIndex",
-      "required": [
-        "limit"
-      ]
-    },
-    "ReqGetRangeWithIndexSortable": {
-      "type": "object",
-      "properties": {
-        "index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        },
-        "sort": {
-          "type": "string",
-          "enum": [
-            "asc",
-            "desc"
-          ],
-          "default": "asc"
-        }
-      },
-      "title": "ReqGetRangeWithIndexSortable"
-    },
-    "ReqGetRecentTrades": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetRecentTrades",
-      "required": [
-        "market_id",
-        "limit"
-      ]
-    },
-    "ReqGetTrades": {
-      "type": "object",
-      "properties": {
-        "market_id": {
-          "type": "integer",
-          "format": "uint8",
-          "default": "255"
-        },
-        "account_index": {
-          "type": "integer",
-          "format": "int64",
-          "default": "-1"
-        },
-        "order_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "sort_by": {
-          "type": "string",
-          "enum": [
-            "block_height",
-            "timestamp",
-            "trade_id"
-          ]
-        },
-        "sort_dir": {
-          "type": "string",
-          "enum": [
-            "asc",
-            "desc"
-          ],
-          "default": "asc"
-        },
-        "cursor": {
-          "type": "string"
-        },
-        "from": {
-          "type": "integer",
-          "format": "int64",
-          "default": "-1"
-        },
-        "ask_filter": {
-          "type": "integer",
-          "format": "int8",
-          "default": "-1"
-        },
-        "limit": {
-          "type": "integer",
-          "format": "int64",
-          "maximum": 100,
-          "minimum": 1
-        }
-      },
-      "title": "ReqGetTrades",
-      "required": [
-        "sort_by",
-        "limit"
-      ]
-    },
-    "ReqGetTx": {
-      "type": "object",
-      "properties": {
-        "by": {
-          "type": "string",
-          "enum": [
-            "hash",
-            "sequence_index"
-          ]
-        },
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": "ReqGetTx",
-      "required": [
-        "by",
-        "value"
-      ]
-    },
-    "ReqGetWithdrawHistory": {
-      "type": "object",
-      "properties": {
-        "account_index": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "cursor": {
-          "type": "string"
-        },
-        "filter": {
-          "type": "string",
-          "enum": [
-            "all",
-            "pending",
-            "claimable"
-          ]
-        }
-      },
-      "title": "ReqGetWithdrawHistory",
-      "required": [
-        "account_index"
-      ]
-    },
-    "ReqIsWhitelisted": {
-      "type": "object",
-      "properties": {
-        "l1_address": {
-          "type": "string"
-        }
-      },
-      "title": "ReqIsWhitelisted",
-      "required": [
-        "l1_address"
       ]
     },
     "ReqSendTx": {
@@ -4777,6 +3505,10 @@
           "format": "int64",
           "example": "1"
         },
+        "order_id": {
+          "type": "string",
+          "example": "1"
+        },
         "owner_account_index": {
           "type": "integer",
           "format": "int64",
@@ -4803,6 +3535,7 @@
       "title": "SimpleOrder",
       "required": [
         "order_index",
+        "order_id",
         "owner_account_index",
         "initial_base_amount",
         "remaining_base_amount",
@@ -4822,12 +3555,18 @@
           "type": "integer",
           "format": "int32",
           "example": "1"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1717777777"
         }
       },
       "title": "Status",
       "required": [
         "status",
-        "network_id"
+        "network_id",
+        "timestamp"
       ]
     },
     "SubAccounts": {
@@ -4858,27 +3597,6 @@
         "code",
         "l1_address",
         "sub_accounts"
-      ]
-    },
-    "Ticker": {
-      "type": "object",
-      "properties": {
-        "s": {
-          "type": "string",
-          "example": "ETH"
-        },
-        "a": {
-          "$ref": "#/definitions/PriceLevel"
-        },
-        "b": {
-          "$ref": "#/definitions/PriceLevel"
-        }
-      },
-      "title": "Ticker",
-      "required": [
-        "s",
-        "a",
-        "b"
       ]
     },
     "Trade": {
@@ -5165,25 +3883,6 @@
         "txs"
       ]
     },
-    "ValidatorInfo": {
-      "type": "object",
-      "properties": {
-        "address": {
-          "type": "string",
-          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
-        },
-        "is_active": {
-          "type": "boolean",
-          "format": "boolean",
-          "example": "true"
-        }
-      },
-      "title": "ValidatorInfo",
-      "required": [
-        "address",
-        "is_active"
-      ]
-    },
     "WithdrawHistory": {
       "type": "object",
       "properties": {
@@ -5202,7 +3901,7 @@
           }
         },
         "cursor": {
-          "$ref": "#/definitions/WithdrawHistoryCursor"
+          "type": "string"
         }
       },
       "title": "WithdrawHistory",
@@ -5210,24 +3909,6 @@
         "code",
         "withdraws",
         "cursor"
-      ]
-    },
-    "WithdrawHistoryCursor": {
-      "type": "object",
-      "properties": {
-        "secure_id": {
-          "type": "string",
-          "example": "1"
-        },
-        "fast_id": {
-          "type": "string",
-          "example": "1"
-        }
-      },
-      "title": "WithdrawHistoryCursor",
-      "required": [
-        "secure_id",
-        "fast_id"
       ]
     },
     "WithdrawHistoryItem": {
@@ -5261,6 +3942,10 @@
             "secure",
             "fast"
           ]
+        },
+        "l1_tx_hash": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
         }
       },
       "title": "WithdrawHistoryItem",
@@ -5269,7 +3954,8 @@
         "amount",
         "timestamp",
         "status",
-        "type"
+        "type",
+        "l1_tx_hash"
       ]
     },
     "ZkLighterInfo": {
