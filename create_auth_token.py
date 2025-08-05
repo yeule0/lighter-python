@@ -9,7 +9,7 @@ import lighter
 
 # ===== CONFIGURATION =====
 
-PRIVATE_KEY = "0xyourapikeyindexhere" # Replace with your actual private key
+PRIVATE_KEY = "0xyourapikeyhere" # Replace with your actual private key
 API_KEY_INDEX = 2 # Replace with your actual API key index
 ACCOUNT_INDEX = 123 # Replace with your actual account index
 
