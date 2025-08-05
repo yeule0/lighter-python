@@ -27,13 +27,15 @@ class PnLEntry(BaseModel):
     PnLEntry
     """ # noqa: E501
     timestamp: StrictInt
-    value: Union[StrictFloat, StrictInt]
     trade_pnl: Union[StrictFloat, StrictInt]
-    pool_pnl: Union[StrictFloat, StrictInt]
     inflow: Union[StrictFloat, StrictInt]
     outflow: Union[StrictFloat, StrictInt]
+    pool_pnl: Union[StrictFloat, StrictInt]
+    pool_inflow: Union[StrictFloat, StrictInt]
+    pool_outflow: Union[StrictFloat, StrictInt]
+    pool_total_shares: Union[StrictFloat, StrictInt]
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["timestamp", "value", "trade_pnl", "pool_pnl", "inflow", "outflow"]
+    __properties: ClassVar[List[str]] = ["timestamp", "trade_pnl", "inflow", "outflow", "pool_pnl", "pool_inflow", "pool_outflow", "pool_total_shares"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -94,11 +96,13 @@ class PnLEntry(BaseModel):
 
         _obj = cls.model_validate({
             "timestamp": obj.get("timestamp"),
-            "value": obj.get("value"),
             "trade_pnl": obj.get("trade_pnl"),
-            "pool_pnl": obj.get("pool_pnl"),
             "inflow": obj.get("inflow"),
-            "outflow": obj.get("outflow")
+            "outflow": obj.get("outflow"),
+            "pool_pnl": obj.get("pool_pnl"),
+            "pool_inflow": obj.get("pool_inflow"),
+            "pool_outflow": obj.get("pool_outflow"),
+            "pool_total_shares": obj.get("pool_total_shares")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

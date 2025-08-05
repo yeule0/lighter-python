@@ -10,6 +10,11 @@ Name | Type | Description | Notes
 **min_operator_share_rate** | **str** |  | 
 **total_shares** | **int** |  | 
 **operator_shares** | **int** |  | 
+**share_price_1d** | **float** |  | 
+**share_price_7d** | **float** |  | 
+**share_price_30d** | **float** |  | 
+**annual_percentage_yield** | **float** |  | 
+**daily_returns** | [**List[DailyReturn]**](DailyReturn.md) |  | 
 
 ## Example
 

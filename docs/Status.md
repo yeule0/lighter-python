@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **int** |  | 
 **network_id** | **int** |  | 
+**timestamp** | **int** |  | 
 
 ## Example
 

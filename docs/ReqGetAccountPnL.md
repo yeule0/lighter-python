@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**auth** | **str** |  | [optional] 
 **by** | **str** |  | 
 **value** | **str** |  | 
 **resolution** | **str** |  | 

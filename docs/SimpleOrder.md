@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **order_index** | **int** |  | 
+**order_id** | **str** |  | 
 **owner_account_index** | **int** |  | 
 **initial_base_amount** | **str** |  | 
 **remaining_base_amount** | **str** |  | 

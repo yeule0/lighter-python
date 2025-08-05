@@ -40,8 +40,18 @@ class Trade(BaseModel):
     is_maker_ask: StrictBool
     block_height: StrictInt
     timestamp: StrictInt
+    taker_fee: Optional[StrictInt]
+    taker_position_size_before: StrictStr
+    taker_entry_quote_before: StrictStr
+    taker_initial_margin_fraction_before: StrictInt
+    taker_position_sign_changed: Optional[StrictBool]
+    maker_fee: Optional[StrictInt]
+    maker_position_size_before: StrictStr
+    maker_entry_quote_before: StrictStr
+    maker_initial_margin_fraction_before: StrictInt
+    maker_position_sign_changed: Optional[StrictBool]
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["trade_id", "tx_hash", "type", "market_id", "size", "price", "usd_amount", "ask_id", "bid_id", "ask_account_id", "bid_account_id", "is_maker_ask", "block_height", "timestamp"]
+    __properties: ClassVar[List[str]] = ["trade_id", "tx_hash", "type", "market_id", "size", "price", "usd_amount", "ask_id", "bid_id", "ask_account_id", "bid_account_id", "is_maker_ask", "block_height", "timestamp", "taker_fee", "taker_position_size_before", "taker_entry_quote_before", "taker_initial_margin_fraction_before", "taker_position_sign_changed", "maker_fee", "maker_position_size_before", "maker_entry_quote_before", "maker_initial_margin_fraction_before", "maker_position_sign_changed"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -121,7 +131,17 @@ class Trade(BaseModel):
             "bid_account_id": obj.get("bid_account_id"),
             "is_maker_ask": obj.get("is_maker_ask"),
             "block_height": obj.get("block_height"),
-            "timestamp": obj.get("timestamp")
+            "timestamp": obj.get("timestamp"),
+            "taker_fee": obj.get("taker_fee"),
+            "taker_position_size_before": obj.get("taker_position_size_before"),
+            "taker_entry_quote_before": obj.get("taker_entry_quote_before"),
+            "taker_initial_margin_fraction_before": obj.get("taker_initial_margin_fraction_before"),
+            "taker_position_sign_changed": obj.get("taker_position_sign_changed"),
+            "maker_fee": obj.get("maker_fee"),
+            "maker_position_size_before": obj.get("maker_position_size_before"),
+            "maker_entry_quote_before": obj.get("maker_entry_quote_before"),
+            "maker_initial_margin_fraction_before": obj.get("maker_initial_margin_fraction_before"),
+            "maker_position_sign_changed": obj.get("maker_position_sign_changed")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

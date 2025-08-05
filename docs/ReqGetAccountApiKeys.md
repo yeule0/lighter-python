@@ -6,7 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **account_index** | **int** |  | 
-**api_key_index** | **int** |  | 
+**api_key_index** | **int** |  | [optional] 
 
 ## Example
 

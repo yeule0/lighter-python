@@ -84,55 +84,6 @@
         "description": "Get account by account's index. <br>More details about account index: [Account Index](https://apidocs.lighter.xyz/docs/account-index)<hr>**Response Description:**<br><br>1) **Status:** 1 is active 0 is inactive.<br>2) **Collateral:** The amount of collateral in the account.<hr>**Position Details Description:**<br>1) **OOC:** Open order count in that market.<br>2) **Sign:** 1 for Long, -1 for Short.<br>3) **Position:** The amount of position in that market.<br>4) **Avg Entry Price:** The average entry price of the position.<br>5) **Position Value:** The value of the position.<br>6) **Unrealized PnL:** The unrealized profit and loss of the position.<br>7) **Realized PnL:** The realized profit and loss of the position."
       }
     },
-    "/api/v1/accountActiveOrders": {
-      "get": {
-        "summary": "accountActiveOrders",
-        "operationId": "accountActiveOrders",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/Orders"
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "schema": {
-              "$ref": "#/definitions/ResultCode"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "account_index",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int64"
-          },
-          {
-            "name": "market_id",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "uint8"
-          },
-          {
-            "name": "auth",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "order"
-        ],
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "description": "Get account active orders. `auth` can be generated using the SDK."
-      }
-    },
     "/api/v1/accountInactiveOrders": {
       "get": {
         "summary": "accountInactiveOrders",
@@ -153,9 +104,17 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "auth",
+            "description": " made optional to support header auth clients",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
@@ -212,15 +171,15 @@
         "description": "Get account inactive orders"
       }
     },
-    "/api/v1/accountOrders": {
+    "/api/v1/accountLimits": {
       "get": {
-        "summary": "accountOrders",
-        "operationId": "accountOrders",
+        "summary": "accountLimits",
+        "operationId": "accountLimits",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/Orders"
+              "$ref": "#/definitions/AccountLimits"
             }
           },
           "400": {
@@ -232,9 +191,10 @@
         },
         "parameters": [
           {
-            "name": "auth",
-            "in": "query",
-            "required": true,
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
             "type": "string"
           },
           {
@@ -245,35 +205,77 @@
             "format": "int64"
           },
           {
-            "name": "market_id",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "uint8"
-          },
-          {
-            "name": "cursor",
+            "name": "auth",
+            "description": " made optional to support header auth clients",
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
-            "minimum": 1,
-            "maximum": 100
           }
         ],
         "tags": [
-          "order"
+          "account"
         ],
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get account orders"
+        "description": "Get account limits"
+      }
+    },
+    "/api/v1/accountMetadata": {
+      "get": {
+        "summary": "accountMetadata",
+        "operationId": "accountMetadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AccountMetadatas"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "by",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "index",
+              "l1_address"
+            ]
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "account"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get account metadatas"
       }
     },
     "/api/v1/accountTxs": {
@@ -295,6 +297,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "index",
             "in": "query",
@@ -335,6 +343,12 @@
               "type": "integer",
               "format": "uint8"
             }
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -379,6 +393,30 @@
           "multipart/form-data"
         ],
         "description": "Get accounts by l1_address returns all accounts associated with the given L1 address"
+      }
+    },
+    "/api/v1/announcement": {
+      "get": {
+        "summary": "announcement",
+        "operationId": "announcement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Announcements"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "tags": [
+          "announcement"
+        ],
+        "description": "Get announcement"
       }
     },
     "/api/v1/apikeys": {
@@ -654,6 +692,50 @@
         "description": "Get candlesticks"
       }
     },
+    "/api/v1/changeAccountTier": {
+      "post": {
+        "summary": "changeAccountTier",
+        "operationId": "changeAccountTier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RespChangeAccountTier"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReqChangeAccountTier"
+            }
+          }
+        ],
+        "tags": [
+          "account"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Change account tier"
+      }
+    },
     "/api/v1/currentHeight": {
       "get": {
         "summary": "currentHeight",
@@ -698,6 +780,13 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "account_index",
             "in": "query",
             "required": true,
@@ -706,8 +795,9 @@
           },
           {
             "name": "auth",
+            "description": " made optional to support header auth clients",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
@@ -767,15 +857,15 @@
         "description": "Get exchange stats"
       }
     },
-    "/api/v1/feeBucket": {
+    "/api/v1/export": {
       "get": {
-        "summary": "feeBucket",
-        "operationId": "feeBucket",
+        "summary": "export",
+        "operationId": "export",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/FeeBucket"
+              "$ref": "#/definitions/ExportData"
             }
           },
           "400": {
@@ -787,20 +877,99 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "account_index",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "integer",
-            "format": "int64"
+            "format": "int64",
+            "default": "-1"
+          },
+          {
+            "name": "market_id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "uint8",
+            "default": "255"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "funding",
+              "trade"
+            ]
           }
         ],
         "tags": [
-          "account"
+          "order"
         ],
         "consumes": [
           "multipart/form-data"
         ],
-        "description": "Get account fee bucket"
+        "description": "Export data"
+      }
+    },
+    "/api/v1/fastbridge/info": {
+      "get": {
+        "summary": "fastbridge_info",
+        "operationId": "fastbridge_info",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RespGetFastBridgeInfo"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "tags": [
+          "bridge"
+        ],
+        "description": "Get fast bridge info"
+      }
+    },
+    "/api/v1/funding-rates": {
+      "get": {
+        "summary": "funding-rates",
+        "operationId": "funding-rates",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FundingRates"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "tags": [
+          "funding"
+        ],
+        "description": "Get funding rates"
       }
     },
     "/api/v1/fundings": {
@@ -835,7 +1004,8 @@
             "required": true,
             "type": "string",
             "enum": [
-              "1h"
+              "1h",
+              "1d"
             ]
           },
           {
@@ -871,6 +1041,128 @@
           "multipart/form-data"
         ],
         "description": "Get fundings"
+      }
+    },
+    "/api/v1/l1Metadata": {
+      "get": {
+        "summary": "l1Metadata",
+        "operationId": "l1Metadata",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/L1Metadata"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "description": " made optional to support header auth clients",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "l1_address",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "account"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get L1 metadata"
+      }
+    },
+    "/api/v1/liquidations": {
+      "get": {
+        "summary": "liquidations",
+        "operationId": "liquidations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LiquidationInfos"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "description": " made optional to support header auth clients",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "market_id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "uint8",
+            "default": "255"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 100
+          }
+        ],
+        "tags": [
+          "account"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get liquidation infos"
       }
     },
     "/api/v1/nextNonce": {
@@ -914,6 +1206,50 @@
           "multipart/form-data"
         ],
         "description": "Get next nonce for a specific account and api key"
+      }
+    },
+    "/api/v1/notification/ack": {
+      "post": {
+        "summary": "notification_ack",
+        "operationId": "notification_ack",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReqAckNotif"
+            }
+          }
+        ],
+        "tags": [
+          "notification"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Ack notification"
       }
     },
     "/api/v1/orderBookDetails": {
@@ -1055,6 +1391,12 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "auth",
             "in": "query",
             "required": false,
@@ -1132,6 +1474,89 @@
         "description": "Get account PnL chart"
       }
     },
+    "/api/v1/positionFunding": {
+      "get": {
+        "summary": "positionFunding",
+        "operationId": "positionFunding",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PositionFundings"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "market_id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "uint8",
+            "default": "255"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 100
+          },
+          {
+            "name": "side",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "long",
+              "short",
+              "all"
+            ],
+            "default": "all"
+          }
+        ],
+        "tags": [
+          "account"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get accounts position fundings"
+      }
+    },
     "/api/v1/publicPools": {
       "get": {
         "summary": "publicPools",
@@ -1151,6 +1576,12 @@
           }
         },
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
           {
             "name": "auth",
             "in": "query",
@@ -1247,6 +1678,56 @@
         "description": "Get recent trades"
       }
     },
+    "/api/v1/referral/points": {
+      "get": {
+        "summary": "referral_points",
+        "operationId": "referral_points",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ReferralPoints"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "description": " made optional to support header auth clients",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "referral"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get referral points"
+      }
+    },
     "/api/v1/sendTx": {
       "post": {
         "summary": "sendTx",
@@ -1255,7 +1736,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/TxHash"
+              "$ref": "#/definitions/RespSendTx"
             }
           },
           "400": {
@@ -1292,7 +1773,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/TxHashes"
+              "$ref": "#/definitions/RespSendTxBatch"
             }
           },
           "400": {
@@ -1341,6 +1822,12 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "auth",
             "in": "query",
             "required": false,
@@ -1386,10 +1873,9 @@
             "required": false,
             "type": "string",
             "enum": [
-              "asc",
               "desc"
             ],
-            "default": "asc"
+            "default": "desc"
           },
           {
             "name": "cursor",
@@ -1430,6 +1916,118 @@
           "multipart/form-data"
         ],
         "description": "Get trades"
+      }
+    },
+    "/api/v1/transfer/history": {
+      "get": {
+        "summary": "transfer_history",
+        "operationId": "transfer_history",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TransferHistory"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "auth",
+            "description": " made optional to support header auth clients",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "transaction"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Get transfer history"
+      }
+    },
+    "/api/v1/transferFeeInfo": {
+      "get": {
+        "summary": "transferFeeInfo",
+        "operationId": "transferFeeInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TransferFeeInfo"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "auth",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account_index",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "to_account_index",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int64",
+            "default": "-1"
+          }
+        ],
+        "tags": [
+          "info"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "description": "Transfer fee info"
       }
     },
     "/api/v1/tx": {
@@ -1577,6 +2175,13 @@
         },
         "parameters": [
           {
+            "name": "authorization",
+            "description": " make required after integ is done",
+            "in": "header",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "account_index",
             "in": "query",
             "required": true,
@@ -1585,8 +2190,9 @@
           },
           {
             "name": "auth",
+            "description": " made optional to support header auth clients",
             "in": "query",
-            "required": true,
+            "required": false,
             "type": "string"
           },
           {
@@ -1614,6 +2220,30 @@
           "multipart/form-data"
         ],
         "description": "Get withdraw history"
+      }
+    },
+    "/api/v1/withdrawalDelay": {
+      "get": {
+        "summary": "withdrawalDelay",
+        "operationId": "withdrawalDelay",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RespWithdrawalDelay"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ResultCode"
+            }
+          }
+        },
+        "tags": [
+          "info"
+        ],
+        "description": "Withdrawal delay in seconds"
       }
     },
     "/info": {
@@ -1677,10 +2307,19 @@
           "format": "int64",
           "example": "100"
         },
+        "total_isolated_order_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "100"
+        },
         "pending_order_count": {
           "type": "integer",
           "format": "int64",
           "example": "100"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": "19995"
         },
         "status": {
           "type": "integer",
@@ -1700,7 +2339,9 @@
         "l1_address",
         "cancel_all_time",
         "total_order_count",
+        "total_isolated_order_count",
         "pending_order_count",
+        "available_balance",
         "status",
         "collateral"
       ]
@@ -1727,6 +2368,214 @@
       "required": [
         "code",
         "api_keys"
+      ]
+    },
+    "AccountLimits": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "max_llp_percentage": {
+          "type": "integer",
+          "format": "int32",
+          "example": "25"
+        },
+        "user_tier": {
+          "type": "string",
+          "example": "std"
+        }
+      },
+      "title": "AccountLimits",
+      "required": [
+        "code",
+        "max_llp_percentage",
+        "user_tier"
+      ]
+    },
+    "AccountMarginStats": {
+      "type": "object",
+      "properties": {
+        "collateral": {
+          "type": "string",
+          "example": "199955"
+        },
+        "portfolio_value": {
+          "type": "string",
+          "example": "199955"
+        },
+        "leverage": {
+          "type": "string",
+          "example": "1.0"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": "199955"
+        },
+        "margin_usage": {
+          "type": "string",
+          "example": "0.0"
+        },
+        "buying_power": {
+          "type": "string",
+          "example": "199955"
+        }
+      },
+      "title": "AccountMarginStats",
+      "required": [
+        "collateral",
+        "portfolio_value",
+        "leverage",
+        "available_balance",
+        "margin_usage",
+        "buying_power"
+      ]
+    },
+    "AccountMarketStats": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "example": "1"
+        },
+        "daily_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "daily_base_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "daily_quote_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        },
+        "weekly_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "weekly_base_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "weekly_quote_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        },
+        "monthly_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "monthly_base_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "monthly_quote_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        },
+        "total_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "total_base_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "total_quote_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        }
+      },
+      "title": "AccountMarketStats",
+      "required": [
+        "market_id",
+        "daily_trades_count",
+        "daily_base_token_volume",
+        "daily_quote_token_volume",
+        "weekly_trades_count",
+        "weekly_base_token_volume",
+        "weekly_quote_token_volume",
+        "monthly_trades_count",
+        "monthly_base_token_volume",
+        "monthly_quote_token_volume",
+        "total_trades_count",
+        "total_base_token_volume",
+        "total_quote_token_volume"
+      ]
+    },
+    "AccountMetadata": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "can_invite": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " Remove After FE uses L1 meta endpoint"
+        },
+        "referral_points_percentage": {
+          "type": "string",
+          "description": " Remove After FE uses L1 meta endpoint"
+        }
+      },
+      "title": "AccountMetadata",
+      "required": [
+        "account_index",
+        "name",
+        "description",
+        "can_invite",
+        "referral_points_percentage"
+      ]
+    },
+    "AccountMetadatas": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "account_metadatas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountMetadata"
+          }
+        }
+      },
+      "title": "AccountMetadatas",
+      "required": [
+        "code",
+        "account_metadatas"
       ]
     },
     "AccountPnL": {
@@ -1817,6 +2666,15 @@
         "total_funding_paid_out": {
           "type": "string",
           "example": "34.2"
+        },
+        "margin_mode": {
+          "type": "integer",
+          "format": "int32",
+          "example": "1"
+        },
+        "allocated_margin": {
+          "type": "string",
+          "example": "46342"
         }
       },
       "title": "AccountPosition",
@@ -1832,7 +2690,156 @@
         "avg_entry_price",
         "position_value",
         "unrealized_pnl",
-        "realized_pnl"
+        "realized_pnl",
+        "margin_mode",
+        "allocated_margin"
+      ]
+    },
+    "AccountStats": {
+      "type": "object",
+      "properties": {
+        "collateral": {
+          "type": "string",
+          "example": "199955"
+        },
+        "portfolio_value": {
+          "type": "string",
+          "example": "199955"
+        },
+        "leverage": {
+          "type": "string",
+          "example": "1.0"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": "199955"
+        },
+        "margin_usage": {
+          "type": "string",
+          "example": "0.0"
+        },
+        "buying_power": {
+          "type": "string",
+          "example": "199955"
+        },
+        "cross_stats": {
+          "$ref": "#/definitions/AccountMarginStats"
+        },
+        "total_stats": {
+          "$ref": "#/definitions/AccountMarginStats"
+        }
+      },
+      "title": "AccountStats",
+      "required": [
+        "collateral",
+        "portfolio_value",
+        "leverage",
+        "available_balance",
+        "margin_usage",
+        "buying_power",
+        "cross_stats",
+        "total_stats"
+      ]
+    },
+    "AccountTradeStats": {
+      "type": "object",
+      "properties": {
+        "daily_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "daily_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "weekly_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "weekly_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "monthly_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "monthly_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "total_trades_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "68"
+        },
+        "total_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        }
+      },
+      "title": "AccountTradeStats",
+      "required": [
+        "daily_trades_count",
+        "daily_volume",
+        "weekly_trades_count",
+        "weekly_volume",
+        "monthly_trades_count",
+        "monthly_volume",
+        "total_trades_count",
+        "total_volume"
+      ]
+    },
+    "Announcement": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Announcement",
+      "required": [
+        "title",
+        "content",
+        "created_at"
+      ]
+    },
+    "Announcements": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "announcements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Announcement"
+          }
+        }
+      },
+      "title": "Announcements",
+      "required": [
+        "code",
+        "announcements"
       ]
     },
     "ApiKey": {
@@ -1964,6 +2971,29 @@
         "blocks"
       ]
     },
+    "BridgeSupportedNetwork": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Arbitrum"
+        },
+        "chain_id": {
+          "type": "string",
+          "example": "4164"
+        },
+        "explorer": {
+          "type": "string",
+          "example": "https://arbiscan.io/"
+        }
+      },
+      "title": "BridgeSupportedNetwork",
+      "required": [
+        "name",
+        "chain_id",
+        "explorer"
+      ]
+    },
     "Candlestick": {
       "type": "object",
       "properties": {
@@ -2049,6 +3079,24 @@
         "candlesticks"
       ]
     },
+    "ContractAddress": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "1"
+        },
+        "address": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        }
+      },
+      "title": "ContractAddress",
+      "required": [
+        "name",
+        "address"
+      ]
+    },
     "CurrentHeight": {
       "type": "object",
       "properties": {
@@ -2070,6 +3118,15 @@
         "code",
         "height"
       ]
+    },
+    "Cursor": {
+      "type": "object",
+      "properties": {
+        "next_cursor": {
+          "type": "string"
+        }
+      },
+      "title": "Cursor"
     },
     "DailyReturn": {
       "type": "object",
@@ -2192,10 +3249,19 @@
           "format": "int64",
           "example": "100"
         },
+        "total_isolated_order_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "100"
+        },
         "pending_order_count": {
           "type": "integer",
           "format": "int64",
           "example": "100"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": "19995"
         },
         "status": {
           "type": "integer",
@@ -2206,6 +3272,10 @@
           "type": "string",
           "example": "46342"
         },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
         "name": {
           "type": "string"
         },
@@ -2214,14 +3284,12 @@
         },
         "can_invite": {
           "type": "boolean",
-          "format": "boolean"
+          "format": "boolean",
+          "description": " Remove After FE uses L1 meta endpoint"
         },
         "referral_points_percentage": {
-          "type": "string"
-        },
-        "max_referral_usage_limit": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "description": " Remove After FE uses L1 meta endpoint"
         },
         "positions": {
           "type": "array",
@@ -2230,6 +3298,10 @@
           }
         },
         "total_asset_value": {
+          "type": "string",
+          "example": "19995"
+        },
+        "cross_asset_value": {
           "type": "string",
           "example": "19995"
         },
@@ -2251,16 +3323,19 @@
         "l1_address",
         "cancel_all_time",
         "total_order_count",
+        "total_isolated_order_count",
         "pending_order_count",
+        "available_balance",
         "status",
         "collateral",
+        "account_index",
         "name",
         "description",
         "can_invite",
         "referral_points_percentage",
-        "max_referral_usage_limit",
         "positions",
         "total_asset_value",
+        "cross_asset_value",
         "pool_info",
         "shares"
       ]
@@ -2293,6 +3368,68 @@
         "code",
         "total",
         "accounts"
+      ]
+    },
+    "DetailedCandlestick": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1640995200"
+        },
+        "open": {
+          "type": "number",
+          "format": "double",
+          "example": "3024.66"
+        },
+        "high": {
+          "type": "number",
+          "format": "double",
+          "example": "3034.66"
+        },
+        "low": {
+          "type": "number",
+          "format": "double",
+          "example": "3014.66"
+        },
+        "close": {
+          "type": "number",
+          "format": "double",
+          "example": "3024.66"
+        },
+        "volume0": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "volume1": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        },
+        "last_trade_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "trade_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1503241"
+        }
+      },
+      "title": "DetailedCandlestick",
+      "required": [
+        "timestamp",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume0",
+        "volume1",
+        "last_trade_id",
+        "trade_count"
       ]
     },
     "EnrichedTx": {
@@ -2454,27 +3591,25 @@
         "daily_trades_count"
       ]
     },
-    "FeeBucket": {
+    "ExportData": {
       "type": "object",
       "properties": {
-        "vip_tier": {
+        "code": {
           "type": "integer",
-          "format": "uint8"
+          "format": "int32",
+          "example": "200"
         },
-        "taker_fee": {
-          "type": "integer",
-          "format": "int32"
+        "message": {
+          "type": "string"
         },
-        "maker_fee": {
-          "type": "integer",
-          "format": "int32"
+        "data_url": {
+          "type": "string"
         }
       },
-      "title": "FeeBucket",
+      "title": "ExportData",
       "required": [
-        "vip_tier",
-        "taker_fee",
-        "maker_fee"
+        "code",
+        "data_url"
       ]
     },
     "Funding": {
@@ -2506,6 +3641,62 @@
         "direction"
       ]
     },
+    "FundingRate": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "exchange": {
+          "type": "string",
+          "enum": [
+            "binance",
+            "bybit",
+            "hyperliquid",
+            "lighter"
+          ]
+        },
+        "symbol": {
+          "type": "string"
+        },
+        "rate": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "title": "FundingRate",
+      "required": [
+        "market_id",
+        "exchange",
+        "symbol",
+        "rate"
+      ]
+    },
+    "FundingRates": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "funding_rates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FundingRate"
+          }
+        }
+      },
+      "title": "FundingRates",
+      "required": [
+        "code",
+        "funding_rates"
+      ]
+    },
     "Fundings": {
       "type": "object",
       "properties": {
@@ -2533,6 +3724,254 @@
         "code",
         "resolution",
         "fundings"
+      ]
+    },
+    "L1Metadata": {
+      "type": "object",
+      "properties": {
+        "l1_address": {
+          "type": "string"
+        },
+        "can_invite": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "referral_points_percentage": {
+          "type": "string"
+        }
+      },
+      "title": "L1Metadata",
+      "required": [
+        "l1_address",
+        "can_invite",
+        "referral_points_percentage"
+      ]
+    },
+    "L1ProviderInfo": {
+      "type": "object",
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "networkId": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "latestBlockNumber": {
+          "type": "integer",
+          "format": "int64",
+          "example": "45434"
+        }
+      },
+      "title": "L1ProviderInfo",
+      "required": [
+        "chainId",
+        "networkId",
+        "latestBlockNumber"
+      ]
+    },
+    "LiqTrade": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "string"
+        },
+        "size": {
+          "type": "string"
+        },
+        "taker_fee": {
+          "type": "string"
+        },
+        "maker_fee": {
+          "type": "string"
+        }
+      },
+      "title": "LiqTrade",
+      "required": [
+        "price",
+        "size",
+        "taker_fee",
+        "maker_fee"
+      ]
+    },
+    "Liquidation": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "partial",
+            "deleverage"
+          ]
+        },
+        "trade": {
+          "$ref": "#/definitions/LiqTrade"
+        },
+        "info": {
+          "$ref": "#/definitions/LiquidationInfo"
+        },
+        "executed_at": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "Liquidation",
+      "required": [
+        "id",
+        "market_id",
+        "type",
+        "trade",
+        "info",
+        "executed_at"
+      ]
+    },
+    "LiquidationInfo": {
+      "type": "object",
+      "properties": {
+        "positions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AccountPosition"
+          }
+        },
+        "risk_info_before": {
+          "$ref": "#/definitions/RiskInfo"
+        },
+        "risk_info_after": {
+          "$ref": "#/definitions/RiskInfo"
+        },
+        "mark_prices": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "title": "LiquidationInfo",
+      "required": [
+        "positions",
+        "risk_info_before",
+        "risk_info_after",
+        "mark_prices"
+      ]
+    },
+    "LiquidationInfos": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "liquidations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Liquidation"
+          }
+        },
+        "next_cursor": {
+          "type": "string"
+        }
+      },
+      "title": "LiquidationInfos",
+      "required": [
+        "code",
+        "liquidations"
+      ]
+    },
+    "MarketInfo": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "example": "1"
+        },
+        "index_price": {
+          "type": "string",
+          "example": "3024.66"
+        },
+        "mark_price": {
+          "type": "string",
+          "example": "3024.66"
+        },
+        "open_interest": {
+          "type": "string",
+          "example": "235.25"
+        },
+        "last_trade_price": {
+          "type": "string",
+          "example": "3024.66"
+        },
+        "current_funding_rate": {
+          "type": "string",
+          "example": "0.0001"
+        },
+        "funding_rate": {
+          "type": "string",
+          "example": "0.0001"
+        },
+        "funding_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1640995200"
+        },
+        "daily_base_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "235.25"
+        },
+        "daily_quote_token_volume": {
+          "type": "number",
+          "format": "double",
+          "example": "93566.25"
+        },
+        "daily_price_low": {
+          "type": "number",
+          "format": "double",
+          "example": "3014.66"
+        },
+        "daily_price_high": {
+          "type": "number",
+          "format": "double",
+          "example": "3024.66"
+        },
+        "daily_price_change": {
+          "type": "number",
+          "format": "double",
+          "example": "3.66"
+        }
+      },
+      "title": "MarketInfo",
+      "required": [
+        "market_id",
+        "index_price",
+        "mark_price",
+        "open_interest",
+        "last_trade_price",
+        "current_funding_rate",
+        "funding_rate",
+        "funding_timestamp",
+        "daily_base_token_volume",
+        "daily_quote_token_volume",
+        "daily_price_low",
+        "daily_price_high",
+        "daily_price_change"
       ]
     },
     "NextNonce": {
@@ -2692,7 +4131,8 @@
             "canceled-self-trade",
             "canceled-expired",
             "canceled-oco",
-            "canceled-child"
+            "canceled-child",
+            "canceled-liquidation"
           ]
         },
         "trigger_status": {
@@ -2847,6 +4287,43 @@
         "supported_size_decimals",
         "supported_price_decimals",
         "supported_quote_decimals"
+      ]
+    },
+    "OrderBookDepth": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "asks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PriceLevel"
+          }
+        },
+        "bids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PriceLevel"
+          }
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int64",
+          "example": "0"
+        }
+      },
+      "title": "OrderBookDepth",
+      "required": [
+        "code",
+        "asks",
+        "bids",
+        "offset"
       ]
     },
     "OrderBookDetail": {
@@ -3188,17 +4665,7 @@
           "format": "int64",
           "example": "1640995200"
         },
-        "value": {
-          "type": "number",
-          "format": "double",
-          "example": "12.0"
-        },
         "trade_pnl": {
-          "type": "number",
-          "format": "double",
-          "example": "12.0"
-        },
-        "pool_pnl": {
           "type": "number",
           "format": "double",
           "example": "12.0"
@@ -3212,16 +4679,133 @@
           "type": "number",
           "format": "double",
           "example": "12.0"
+        },
+        "pool_pnl": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "pool_inflow": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "pool_outflow": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
+        },
+        "pool_total_shares": {
+          "type": "number",
+          "format": "double",
+          "example": "12.0"
         }
       },
       "title": "PnLEntry",
       "required": [
         "timestamp",
-        "value",
         "trade_pnl",
-        "pool_pnl",
         "inflow",
-        "outflow"
+        "outflow",
+        "pool_pnl",
+        "pool_inflow",
+        "pool_outflow",
+        "pool_total_shares"
+      ]
+    },
+    "PositionFunding": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1640995200"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "example": "1"
+        },
+        "funding_id": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "change": {
+          "type": "string",
+          "example": "1"
+        },
+        "rate": {
+          "type": "string",
+          "example": "1"
+        },
+        "position_size": {
+          "type": "string",
+          "example": "1"
+        },
+        "position_side": {
+          "type": "string",
+          "example": "long",
+          "enum": [
+            "long",
+            "short"
+          ]
+        }
+      },
+      "title": "PositionFunding",
+      "required": [
+        "timestamp",
+        "market_id",
+        "funding_id",
+        "change",
+        "rate",
+        "position_size",
+        "position_side"
+      ]
+    },
+    "PositionFundings": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "position_fundings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PositionFunding"
+          }
+        },
+        "next_cursor": {
+          "type": "string"
+        }
+      },
+      "title": "PositionFundings",
+      "required": [
+        "code",
+        "position_fundings"
+      ]
+    },
+    "PriceLevel": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "string",
+          "example": "3024.66"
+        },
+        "size": {
+          "type": "string",
+          "example": "0.1"
+        }
+      },
+      "title": "PriceLevel",
+      "required": [
+        "price",
+        "size"
       ]
     },
     "PublicPool": {
@@ -3259,10 +4843,19 @@
           "format": "int64",
           "example": "100"
         },
+        "total_isolated_order_count": {
+          "type": "integer",
+          "format": "int64",
+          "example": "100"
+        },
         "pending_order_count": {
           "type": "integer",
           "format": "int64",
           "example": "100"
+        },
+        "available_balance": {
+          "type": "string",
+          "example": "19995"
         },
         "status": {
           "type": "integer",
@@ -3273,6 +4866,10 @@
           "type": "string",
           "example": "46342"
         },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
         "name": {
           "type": "string"
         },
@@ -3281,16 +4878,18 @@
         },
         "can_invite": {
           "type": "boolean",
-          "format": "boolean"
+          "format": "boolean",
+          "description": " Remove After FE uses L1 meta endpoint"
         },
         "referral_points_percentage": {
-          "type": "string"
-        },
-        "max_referral_usage_limit": {
-          "type": "integer",
-          "format": "int32"
+          "type": "string",
+          "description": " Remove After FE uses L1 meta endpoint"
         },
         "total_asset_value": {
+          "type": "string",
+          "example": "19995"
+        },
+        "cross_asset_value": {
           "type": "string",
           "example": "19995"
         },
@@ -3309,15 +4908,18 @@
         "l1_address",
         "cancel_all_time",
         "total_order_count",
+        "total_isolated_order_count",
         "pending_order_count",
+        "available_balance",
         "status",
         "collateral",
+        "account_index",
         "name",
         "description",
         "can_invite",
         "referral_points_percentage",
-        "max_referral_usage_limit",
         "total_asset_value",
+        "cross_asset_value",
         "pool_info"
       ]
     },
@@ -3442,6 +5044,1037 @@
         "public_pools"
       ]
     },
+    "ReferralPointEntry": {
+      "type": "object",
+      "properties": {
+        "l1_address": {
+          "type": "string"
+        },
+        "total_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "week_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "total_reward_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "week_reward_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "200"
+        },
+        "reward_point_multiplier": {
+          "type": "string",
+          "example": "0.1"
+        }
+      },
+      "title": "ReferralPointEntry",
+      "required": [
+        "l1_address",
+        "total_points",
+        "week_points",
+        "total_reward_points",
+        "week_reward_points",
+        "reward_point_multiplier"
+      ]
+    },
+    "ReferralPoints": {
+      "type": "object",
+      "properties": {
+        "referrals": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReferralPointEntry"
+          }
+        },
+        "user_total_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "user_last_week_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "user_total_referral_reward_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "user_last_week_referral_reward_points": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1000"
+        },
+        "reward_point_multiplier": {
+          "type": "string",
+          "example": "0.1"
+        }
+      },
+      "title": "ReferralPoints",
+      "required": [
+        "referrals",
+        "user_total_points",
+        "user_last_week_points",
+        "user_total_referral_reward_points",
+        "user_last_week_referral_reward_points",
+        "reward_point_multiplier"
+      ]
+    },
+    "ReqAckNotif": {
+      "type": "object",
+      "properties": {
+        "notif_id": {
+          "type": "string",
+          "example": "'liq:17:5898'"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ReqAckNotif",
+      "required": [
+        "notif_id",
+        "account_index"
+      ]
+    },
+    "ReqChangeAccountTier": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "new_tier": {
+          "type": "string"
+        }
+      },
+      "title": "ReqChangeAccountTier",
+      "required": [
+        "account_index",
+        "new_tier"
+      ]
+    },
+    "ReqExportData": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64",
+          "default": "-1"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "funding",
+            "trade"
+          ]
+        }
+      },
+      "title": "ReqExportData",
+      "required": [
+        "type"
+      ]
+    },
+    "ReqGetAccount": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "index",
+            "l1_address"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetAccount",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetAccountApiKeys": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "api_key_index": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        }
+      },
+      "title": "ReqGetAccountApiKeys",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetAccountByL1Address": {
+      "type": "object",
+      "properties": {
+        "l1_address": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetAccountByL1Address",
+      "required": [
+        "l1_address"
+      ]
+    },
+    "ReqGetAccountInactiveOrders": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        },
+        "ask_filter": {
+          "type": "integer",
+          "format": "int8",
+          "default": "-1"
+        },
+        "between_timestamps": {
+          "type": "string"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetAccountInactiveOrders",
+      "required": [
+        "account_index",
+        "limit"
+      ]
+    },
+    "ReqGetAccountLimits": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        }
+      },
+      "title": "ReqGetAccountLimits",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetAccountMetadata": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "index",
+            "l1_address"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "auth": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetAccountMetadata",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetAccountPnL": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "by": {
+          "type": "string",
+          "enum": [
+            "index"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h",
+            "1d"
+          ]
+        },
+        "start_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "end_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "count_back": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "ignore_transfers": {
+          "type": "boolean",
+          "format": "boolean",
+          "default": "false"
+        }
+      },
+      "title": "ReqGetAccountPnL",
+      "required": [
+        "by",
+        "value",
+        "resolution",
+        "start_timestamp",
+        "end_timestamp",
+        "count_back"
+      ]
+    },
+    "ReqGetAccountTxs": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "by": {
+          "type": "string",
+          "enum": [
+            "account_index"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "uint8"
+          }
+        },
+        "auth": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetAccountTxs"
+    },
+    "ReqGetBlock": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "commitment",
+            "height"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetBlock",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetBlockTxs": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "block_height",
+            "block_commitment"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetBlockTxs",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetByAccount": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "account_index"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetByAccount",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetCandlesticks": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "1m",
+            "5m",
+            "15m",
+            "1h",
+            "4h",
+            "1d"
+          ]
+        },
+        "start_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "end_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "count_back": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "set_timestamp_to_end": {
+          "type": "boolean",
+          "format": "boolean",
+          "default": "false"
+        }
+      },
+      "title": "ReqGetCandlesticks",
+      "required": [
+        "market_id",
+        "resolution",
+        "start_timestamp",
+        "end_timestamp",
+        "count_back"
+      ]
+    },
+    "ReqGetDepositHistory": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "l1_address": {
+          "type": "string"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "string",
+          "enum": [
+            "all",
+            "pending",
+            "claimable"
+          ]
+        }
+      },
+      "title": "ReqGetDepositHistory",
+      "required": [
+        "account_index",
+        "l1_address"
+      ]
+    },
+    "ReqGetExchangeStats": {
+      "type": "object",
+      "title": "ReqGetExchangeStats"
+    },
+    "ReqGetFastWithdrawInfo": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        }
+      },
+      "title": "ReqGetFastWithdrawInfo",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetFundings": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "1h",
+            "1d"
+          ]
+        },
+        "start_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "end_timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 5000000000000
+        },
+        "count_back": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ReqGetFundings",
+      "required": [
+        "market_id",
+        "resolution",
+        "start_timestamp",
+        "end_timestamp",
+        "count_back"
+      ]
+    },
+    "ReqGetL1Metadata": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "l1_address": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetL1Metadata",
+      "required": [
+        "l1_address"
+      ]
+    },
+    "ReqGetL1Tx": {
+      "type": "object",
+      "properties": {
+        "hash": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetL1Tx",
+      "required": [
+        "hash"
+      ]
+    },
+    "ReqGetLatestDeposit": {
+      "type": "object",
+      "properties": {
+        "l1_address": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetLatestDeposit",
+      "required": [
+        "l1_address"
+      ]
+    },
+    "ReqGetLiquidationInfos": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetLiquidationInfos",
+      "required": [
+        "account_index",
+        "limit"
+      ]
+    },
+    "ReqGetNextNonce": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "api_key_index": {
+          "type": "integer",
+          "format": "uint8"
+        }
+      },
+      "title": "ReqGetNextNonce",
+      "required": [
+        "account_index",
+        "api_key_index"
+      ]
+    },
+    "ReqGetOrderBookDetails": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        }
+      },
+      "title": "ReqGetOrderBookDetails"
+    },
+    "ReqGetOrderBookOrders": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetOrderBookOrders",
+      "required": [
+        "market_id",
+        "limit"
+      ]
+    },
+    "ReqGetOrderBooks": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        }
+      },
+      "title": "ReqGetOrderBooks"
+    },
+    "ReqGetPositionFunding": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "side": {
+          "type": "string",
+          "enum": [
+            "long",
+            "short",
+            "all"
+          ],
+          "default": "all"
+        }
+      },
+      "title": "ReqGetPositionFunding",
+      "required": [
+        "account_index",
+        "limit"
+      ]
+    },
+    "ReqGetPublicPools": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "string",
+          "enum": [
+            "all",
+            "user",
+            "protocol",
+            "account_index"
+          ]
+        },
+        "index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ReqGetPublicPools",
+      "required": [
+        "index",
+        "limit"
+      ]
+    },
+    "ReqGetRangeWithCursor": {
+      "type": "object",
+      "properties": {
+        "cursor": {
+          "type": "string"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetRangeWithCursor",
+      "required": [
+        "limit"
+      ]
+    },
+    "ReqGetRangeWithIndex": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetRangeWithIndex",
+      "required": [
+        "limit"
+      ]
+    },
+    "ReqGetRangeWithIndexSortable": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "asc",
+            "desc"
+          ],
+          "default": "asc"
+        }
+      },
+      "title": "ReqGetRangeWithIndexSortable"
+    },
+    "ReqGetRecentTrades": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetRecentTrades",
+      "required": [
+        "market_id",
+        "limit"
+      ]
+    },
+    "ReqGetReferralPoints": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "ReqGetReferralPoints",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetTrades": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "market_id": {
+          "type": "integer",
+          "format": "uint8",
+          "default": "255"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64",
+          "default": "-1"
+        },
+        "order_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "sort_by": {
+          "type": "string",
+          "enum": [
+            "block_height",
+            "timestamp",
+            "trade_id"
+          ]
+        },
+        "sort_dir": {
+          "type": "string",
+          "enum": [
+            "desc"
+          ],
+          "default": "desc"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "from": {
+          "type": "integer",
+          "format": "int64",
+          "default": "-1"
+        },
+        "ask_filter": {
+          "type": "integer",
+          "format": "int8",
+          "default": "-1"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "maximum": 100,
+          "minimum": 1
+        }
+      },
+      "title": "ReqGetTrades",
+      "required": [
+        "sort_by",
+        "limit"
+      ]
+    },
+    "ReqGetTransferFeeInfo": {
+      "type": "object",
+      "properties": {
+        "auth": {
+          "type": "string"
+        },
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "to_account_index": {
+          "type": "integer",
+          "format": "int64",
+          "default": "-1"
+        }
+      },
+      "title": "ReqGetTransferFeeInfo",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetTransferHistory": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "cursor": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetTransferHistory",
+      "required": [
+        "account_index"
+      ]
+    },
+    "ReqGetTx": {
+      "type": "object",
+      "properties": {
+        "by": {
+          "type": "string",
+          "enum": [
+            "hash",
+            "sequence_index"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "ReqGetTx",
+      "required": [
+        "by",
+        "value"
+      ]
+    },
+    "ReqGetWithdrawHistory": {
+      "type": "object",
+      "properties": {
+        "account_index": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "auth": {
+          "type": "string",
+          "description": " made optional to support header auth clients"
+        },
+        "cursor": {
+          "type": "string"
+        },
+        "filter": {
+          "type": "string",
+          "enum": [
+            "all",
+            "pending",
+            "claimable"
+          ]
+        }
+      },
+      "title": "ReqGetWithdrawHistory",
+      "required": [
+        "account_index"
+      ]
+    },
     "ReqSendTx": {
       "type": "object",
       "properties": {
@@ -3480,6 +6113,116 @@
         "tx_infos"
       ]
     },
+    "RespChangeAccountTier": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "RespChangeAccountTier",
+      "required": [
+        "code"
+      ]
+    },
+    "RespGetFastBridgeInfo": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "fast_bridge_limit": {
+          "type": "string"
+        }
+      },
+      "title": "RespGetFastBridgeInfo",
+      "required": [
+        "code",
+        "fast_bridge_limit"
+      ]
+    },
+    "RespSendTx": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "tx_hash": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        },
+        "predicted_execution_time_ms": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1751465474"
+        }
+      },
+      "title": "RespSendTx",
+      "required": [
+        "code",
+        "tx_hash",
+        "predicted_execution_time_ms"
+      ]
+    },
+    "RespSendTxBatch": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "tx_hash": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predicted_execution_time_ms": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1751465474"
+        }
+      },
+      "title": "RespSendTxBatch",
+      "required": [
+        "code",
+        "tx_hash",
+        "predicted_execution_time_ms"
+      ]
+    },
+    "RespWithdrawalDelay": {
+      "type": "object",
+      "properties": {
+        "seconds": {
+          "type": "integer",
+          "format": "int64",
+          "example": "86400"
+        }
+      },
+      "title": "RespWithdrawalDelay",
+      "required": [
+        "seconds"
+      ]
+    },
     "ResultCode": {
       "type": "object",
       "properties": {
@@ -3495,6 +6238,58 @@
       "title": "ResultCode",
       "required": [
         "code"
+      ]
+    },
+    "RiskInfo": {
+      "type": "object",
+      "properties": {
+        "cross_risk_parameters": {
+          "$ref": "#/definitions/RiskParameters"
+        },
+        "isolated_risk_parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RiskParameters"
+          }
+        }
+      },
+      "title": "RiskInfo",
+      "required": [
+        "cross_risk_parameters",
+        "isolated_risk_parameters"
+      ]
+    },
+    "RiskParameters": {
+      "type": "object",
+      "properties": {
+        "market_id": {
+          "type": "integer",
+          "format": "uint8"
+        },
+        "collateral": {
+          "type": "string"
+        },
+        "total_account_value": {
+          "type": "string"
+        },
+        "initial_margin_req": {
+          "type": "string"
+        },
+        "maintenance_margin_req": {
+          "type": "string"
+        },
+        "close_out_margin_req": {
+          "type": "string"
+        }
+      },
+      "title": "RiskParameters",
+      "required": [
+        "market_id",
+        "collateral",
+        "total_account_value",
+        "initial_margin_req",
+        "maintenance_margin_req",
+        "close_out_margin_req"
       ]
     },
     "SimpleOrder": {
@@ -3599,6 +6394,27 @@
         "sub_accounts"
       ]
     },
+    "Ticker": {
+      "type": "object",
+      "properties": {
+        "s": {
+          "type": "string",
+          "example": "ETH"
+        },
+        "a": {
+          "$ref": "#/definitions/PriceLevel"
+        },
+        "b": {
+          "$ref": "#/definitions/PriceLevel"
+        }
+      },
+      "title": "Ticker",
+      "required": [
+        "s",
+        "a",
+        "b"
+      ]
+    },
     "Trade": {
       "type": "object",
       "properties": {
@@ -3671,6 +6487,52 @@
           "type": "integer",
           "format": "int64",
           "example": "1640995200"
+        },
+        "taker_fee": {
+          "type": "integer",
+          "format": "int32",
+          "example": "0"
+        },
+        "taker_position_size_before": {
+          "type": "string",
+          "example": "0"
+        },
+        "taker_entry_quote_before": {
+          "type": "string",
+          "example": "0"
+        },
+        "taker_initial_margin_fraction_before": {
+          "type": "integer",
+          "format": "uin16",
+          "example": "0"
+        },
+        "taker_position_sign_changed": {
+          "type": "boolean",
+          "format": "boolean",
+          "example": "true"
+        },
+        "maker_fee": {
+          "type": "integer",
+          "format": "int32",
+          "example": "0"
+        },
+        "maker_position_size_before": {
+          "type": "string",
+          "example": "0"
+        },
+        "maker_entry_quote_before": {
+          "type": "string",
+          "example": "0"
+        },
+        "maker_initial_margin_fraction_before": {
+          "type": "integer",
+          "format": "uin16",
+          "example": "0"
+        },
+        "maker_position_sign_changed": {
+          "type": "boolean",
+          "format": "boolean",
+          "example": "true"
         }
       },
       "title": "Trade",
@@ -3688,7 +6550,17 @@
         "bid_account_id",
         "is_maker_ask",
         "block_height",
-        "timestamp"
+        "timestamp",
+        "taker_fee",
+        "taker_position_size_before",
+        "taker_entry_quote_before",
+        "taker_initial_margin_fraction_before",
+        "taker_position_sign_changed",
+        "maker_fee",
+        "maker_position_size_before",
+        "maker_entry_quote_before",
+        "maker_initial_margin_fraction_before",
+        "maker_position_sign_changed"
       ]
     },
     "Trades": {
@@ -3716,6 +6588,114 @@
       "required": [
         "code",
         "trades"
+      ]
+    },
+    "TransferFeeInfo": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "transfer_fee_usdc": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "TransferFeeInfo",
+      "required": [
+        "code",
+        "transfer_fee_usdc"
+      ]
+    },
+    "TransferHistory": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "example": "200"
+        },
+        "message": {
+          "type": "string"
+        },
+        "transfers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TransferHistoryItem"
+          }
+        },
+        "cursor": {
+          "type": "string"
+        }
+      },
+      "title": "TransferHistory",
+      "required": [
+        "code",
+        "transfers",
+        "cursor"
+      ]
+    },
+    "TransferHistoryItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "string",
+          "example": "0.1"
+        },
+        "timestamp": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1640995200"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "L2TransferInflow",
+            "L2TransferOutflow"
+          ]
+        },
+        "from_l1_address": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        },
+        "to_l1_address": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        },
+        "from_account_index": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "to_account_index": {
+          "type": "integer",
+          "format": "int64",
+          "example": "1"
+        },
+        "tx_hash": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        }
+      },
+      "title": "TransferHistoryItem",
+      "required": [
+        "id",
+        "amount",
+        "timestamp",
+        "type",
+        "from_l1_address",
+        "to_l1_address",
+        "from_account_index",
+        "to_account_index",
+        "tx_hash"
       ]
     },
     "Tx": {
@@ -3881,6 +6861,25 @@
       "required": [
         "code",
         "txs"
+      ]
+    },
+    "ValidatorInfo": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+        },
+        "is_active": {
+          "type": "boolean",
+          "format": "boolean",
+          "example": "true"
+        }
+      },
+      "title": "ValidatorInfo",
+      "required": [
+        "address",
+        "is_active"
       ]
     },
     "WithdrawHistory": {

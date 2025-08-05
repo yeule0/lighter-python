@@ -6,7 +6,13 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **timestamp** | **int** |  | 
-**value** | **float** |  | 
+**trade_pnl** | **float** |  | 
+**inflow** | **float** |  | 
+**outflow** | **float** |  | 
+**pool_pnl** | **float** |  | 
+**pool_inflow** | **float** |  | 
+**pool_outflow** | **float** |  | 
+**pool_total_shares** | **float** |  | 
 
 ## Example
 

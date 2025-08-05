@@ -39,8 +39,10 @@ class AccountPosition(BaseModel):
     unrealized_pnl: StrictStr
     realized_pnl: StrictStr
     total_funding_paid_out: Optional[StrictStr] = None
+    margin_mode: StrictInt
+    allocated_margin: StrictStr
     additional_properties: Dict[str, Any] = {}
-    __properties: ClassVar[List[str]] = ["market_id", "symbol", "initial_margin_fraction", "open_order_count", "pending_order_count", "position_tied_order_count", "sign", "position", "avg_entry_price", "position_value", "unrealized_pnl", "realized_pnl", "total_funding_paid_out"]
+    __properties: ClassVar[List[str]] = ["market_id", "symbol", "initial_margin_fraction", "open_order_count", "pending_order_count", "position_tied_order_count", "sign", "position", "avg_entry_price", "position_value", "unrealized_pnl", "realized_pnl", "total_funding_paid_out", "margin_mode", "allocated_margin"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -112,7 +114,9 @@ class AccountPosition(BaseModel):
             "position_value": obj.get("position_value"),
             "unrealized_pnl": obj.get("unrealized_pnl"),
             "realized_pnl": obj.get("realized_pnl"),
-            "total_funding_paid_out": obj.get("total_funding_paid_out")
+            "total_funding_paid_out": obj.get("total_funding_paid_out"),
+            "margin_mode": obj.get("margin_mode"),
+            "allocated_margin": obj.get("allocated_margin")
         })
         # store additional fields in additional_properties
         for _key in obj.keys():

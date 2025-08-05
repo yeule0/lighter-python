@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **amount** | **str** |  | 
 **timestamp** | **int** |  | 
 **status** | **str** |  | 
+**l1_tx_hash** | **str** |  | 
 
 ## Example
 

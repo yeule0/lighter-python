@@ -5,6 +5,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**auth** | **str** |  | [optional] 
 **filter** | **str** |  | [optional] 
 **index** | **int** |  | 
 **limit** | **int** |  | 

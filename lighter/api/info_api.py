@@ -16,7 +16,10 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from lighter.models.layer2_basic_info import Layer2BasicInfo
+from pydantic import StrictInt, StrictStr
+from typing import Optional
+from lighter.models.resp_withdrawal_delay import RespWithdrawalDelay
+from lighter.models.transfer_fee_info import TransferFeeInfo
 
 from lighter.api_client import ApiClient, RequestSerialized
 from lighter.api_response import ApiResponse
@@ -37,8 +40,12 @@ class InfoApi:
 
 
     @validate_call
-    async def layer2_basic_info(
+    async def transfer_fee_info(
         self,
+        account_index: StrictInt,
+        authorization: Optional[StrictStr] = None,
+        auth: Optional[StrictStr] = None,
+        to_account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -51,11 +58,19 @@ class InfoApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Layer2BasicInfo:
-        """layer2BasicInfo
+    ) -> TransferFeeInfo:
+        """transferFeeInfo
 
-        Get zklighter general info, including transaction and block stats
+        Transfer fee info
 
+        :param account_index: (required)
+        :type account_index: int
+        :param authorization:
+        :type authorization: str
+        :param auth:
+        :type auth: str
+        :param to_account_index:
+        :type to_account_index: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -78,7 +93,11 @@ class InfoApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._layer2_basic_info_serialize(
+        _param = self._transfer_fee_info_serialize(
+            account_index=account_index,
+            authorization=authorization,
+            auth=auth,
+            to_account_index=to_account_index,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -86,7 +105,7 @@ class InfoApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Layer2BasicInfo",
+            '200': "TransferFeeInfo",
             '400': "ResultCode",
         }
         response_data = await self.api_client.call_api(
@@ -101,8 +120,12 @@ class InfoApi:
 
 
     @validate_call
-    async def layer2_basic_info_with_http_info(
+    async def transfer_fee_info_with_http_info(
         self,
+        account_index: StrictInt,
+        authorization: Optional[StrictStr] = None,
+        auth: Optional[StrictStr] = None,
+        to_account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -115,11 +138,19 @@ class InfoApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Layer2BasicInfo]:
-        """layer2BasicInfo
+    ) -> ApiResponse[TransferFeeInfo]:
+        """transferFeeInfo
 
-        Get zklighter general info, including transaction and block stats
+        Transfer fee info
 
+        :param account_index: (required)
+        :type account_index: int
+        :param authorization:
+        :type authorization: str
+        :param auth:
+        :type auth: str
+        :param to_account_index:
+        :type to_account_index: int
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -142,7 +173,11 @@ class InfoApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._layer2_basic_info_serialize(
+        _param = self._transfer_fee_info_serialize(
+            account_index=account_index,
+            authorization=authorization,
+            auth=auth,
+            to_account_index=to_account_index,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -150,7 +185,7 @@ class InfoApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Layer2BasicInfo",
+            '200': "TransferFeeInfo",
             '400': "ResultCode",
         }
         response_data = await self.api_client.call_api(
@@ -165,8 +200,12 @@ class InfoApi:
 
 
     @validate_call
-    async def layer2_basic_info_without_preload_content(
+    async def transfer_fee_info_without_preload_content(
         self,
+        account_index: StrictInt,
+        authorization: Optional[StrictStr] = None,
+        auth: Optional[StrictStr] = None,
+        to_account_index: Optional[StrictInt] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -180,9 +219,157 @@ class InfoApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """layer2BasicInfo
+        """transferFeeInfo
 
-        Get zklighter general info, including transaction and block stats
+        Transfer fee info
+
+        :param account_index: (required)
+        :type account_index: int
+        :param authorization:
+        :type authorization: str
+        :param auth:
+        :type auth: str
+        :param to_account_index:
+        :type to_account_index: int
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._transfer_fee_info_serialize(
+            account_index=account_index,
+            authorization=authorization,
+            auth=auth,
+            to_account_index=to_account_index,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "TransferFeeInfo",
+            '400': "ResultCode",
+        }
+        response_data = await self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _transfer_fee_info_serialize(
+        self,
+        account_index,
+        authorization,
+        auth,
+        to_account_index,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[str, Union[str, bytes]] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if auth is not None:
+            
+            _query_params.append(('auth', auth))
+            
+        if account_index is not None:
+            
+            _query_params.append(('account_index', account_index))
+            
+        if to_account_index is not None:
+            
+            _query_params.append(('to_account_index', to_account_index))
+            
+        # process the header parameters
+        if authorization is not None:
+            _header_params['authorization'] = authorization
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/transferFeeInfo',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    async def withdrawal_delay(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RespWithdrawalDelay:
+        """withdrawalDelay
+
+        Withdrawal delay in seconds
 
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -206,7 +393,7 @@ class InfoApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._layer2_basic_info_serialize(
+        _param = self._withdrawal_delay_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -214,7 +401,135 @@ class InfoApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Layer2BasicInfo",
+            '200': "RespWithdrawalDelay",
+            '400': "ResultCode",
+        }
+        response_data = await self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        await response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    async def withdrawal_delay_with_http_info(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[RespWithdrawalDelay]:
+        """withdrawalDelay
+
+        Withdrawal delay in seconds
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._withdrawal_delay_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "RespWithdrawalDelay",
+            '400': "ResultCode",
+        }
+        response_data = await self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        await response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    async def withdrawal_delay_without_preload_content(
+        self,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """withdrawalDelay
+
+        Withdrawal delay in seconds
+
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._withdrawal_delay_serialize(
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "RespWithdrawalDelay",
             '400': "ResultCode",
         }
         response_data = await self.api_client.call_api(
@@ -224,7 +539,7 @@ class InfoApi:
         return response_data.response
 
 
-    def _layer2_basic_info_serialize(
+    def _withdrawal_delay_serialize(
         self,
         _request_auth,
         _content_type,
@@ -266,7 +581,7 @@ class InfoApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/api/v1/layer2BasicInfo',
+            resource_path='/api/v1/withdrawalDelay',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

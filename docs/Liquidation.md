@@ -5,11 +5,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**liquidation_id** | **int** |  | 
-**account_index** | **int** |  | 
-**liquidation_type** | **int** |  | 
-**portfolio_value** | **str** |  | 
-**margin_requirement** | **str** |  | 
+**id** | **int** |  | 
+**market_id** | **int** |  | 
+**type** | **str** |  | 
+**trade** | [**LiqTrade**](LiqTrade.md) |  | 
+**info** | [**LiquidationInfo**](LiquidationInfo.md) |  | 
+**executed_at** | **int** |  | 
 
 ## Example
 

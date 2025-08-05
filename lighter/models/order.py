@@ -77,8 +77,8 @@ class Order(BaseModel):
     @field_validator('status')
     def status_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child']):
-            raise ValueError("must be one of enum values ('in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child')")
+        if value not in set(['in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child', 'canceled-liquidation']):
+            raise ValueError("must be one of enum values ('in-progress', 'pending', 'open', 'filled', 'canceled', 'canceled-post-only', 'canceled-reduce-only', 'canceled-position-not-allowed', 'canceled-margin-not-allowed', 'canceled-too-much-slippage', 'canceled-not-enough-liquidity', 'canceled-self-trade', 'canceled-expired', 'canceled-oco', 'canceled-child', 'canceled-liquidation')")
         return value
 
     @field_validator('trigger_status')

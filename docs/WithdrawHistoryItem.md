@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **timestamp** | **int** |  | 
 **status** | **str** |  | 
 **type** | **str** |  | 
+**l1_tx_hash** | **str** |  | 
 
 ## Example
 

@@ -21,7 +21,7 @@ from setuptools import setup, find_packages  # noqa: H301
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 NAME = "lighter-sdk"
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 PYTHON_REQUIRES = ">=3.7"
 REQUIRES = [
     "urllib3 >= 1.25.3, < 2.1.0",
@@ -32,6 +32,7 @@ REQUIRES = [
     "typing-extensions >= 4.7.1",
     "websockets >= 12.0.0",
     "eth-account >= 0.13.4",
+    "requests >= 2.31.0",
 ]
 
 setup(

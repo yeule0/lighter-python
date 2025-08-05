@@ -9,6 +9,15 @@ Name | Type | Description | Notes
 **daily_trades_count** | **int** |  | 
 **daily_base_token_volume** | **float** |  | 
 **daily_quote_token_volume** | **float** |  | 
+**weekly_trades_count** | **int** |  | 
+**weekly_base_token_volume** | **float** |  | 
+**weekly_quote_token_volume** | **float** |  | 
+**monthly_trades_count** | **int** |  | 
+**monthly_base_token_volume** | **float** |  | 
+**monthly_quote_token_volume** | **float** |  | 
+**total_trades_count** | **int** |  | 
+**total_base_token_volume** | **float** |  | 
+**total_quote_token_volume** | **float** |  | 
 
 ## Example
 

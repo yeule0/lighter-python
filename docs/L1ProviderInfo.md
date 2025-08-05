@@ -8,7 +8,6 @@ Name | Type | Description | Notes
 **chain_id** | **int** |  | 
 **network_id** | **int** |  | 
 **latest_block_number** | **int** |  | 
-**network_rpc** | **str** |  | 
 
 ## Example
 

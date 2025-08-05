@@ -10,12 +10,16 @@ Name | Type | Description | Notes
 **initial_margin_fraction** | **str** |  | 
 **open_order_count** | **int** |  | 
 **pending_order_count** | **int** |  | 
+**position_tied_order_count** | **int** |  | 
 **sign** | **int** |  | 
 **position** | **str** |  | 
 **avg_entry_price** | **str** |  | 
 **position_value** | **str** |  | 
 **unrealized_pnl** | **str** |  | 
 **realized_pnl** | **str** |  | 
+**total_funding_paid_out** | **str** |  | [optional] 
+**margin_mode** | **int** |  | 
+**allocated_margin** | **str** |  | 
 
 ## Example
 

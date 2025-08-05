@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **by** | **str** |  | [optional] 
 **value** | **str** |  | [optional] 
 **types** | **List[int]** |  | [optional] 
+**auth** | **str** |  | [optional] 
 
 ## Example
 

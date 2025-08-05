@@ -6,6 +6,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **account_index** | **int** |  | 
+**auth** | **str** |  made optional to support header auth clients | [optional] 
 **cursor** | **str** |  | [optional] 
 **filter** | **str** |  | [optional] 
 

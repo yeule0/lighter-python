@@ -68,11 +68,8 @@ All URIs are relative to *https://mainnet.zklighter.elliot.ai*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AccountApi* | [**account**](docs/AccountApi.md#account) | **GET** /api/v1/account | account
-*AccountApi* | [**accounts**](docs/AccountApi.md#accounts) | **GET** /api/v1/accounts | accounts
 *AccountApi* | [**accounts_by_l1_address**](docs/AccountApi.md#accounts_by_l1_address) | **GET** /api/v1/accountsByL1Address | accountsByL1Address
 *AccountApi* | [**apikeys**](docs/AccountApi.md#apikeys) | **GET** /api/v1/apikeys | apikeys
-*AccountApi* | [**fee_bucket**](docs/AccountApi.md#fee_bucket) | **GET** /api/v1/feeBucket | feeBucket
-*AccountApi* | [**is_whitelisted**](docs/AccountApi.md#is_whitelisted) | **GET** /api/v1/isWhitelisted | isWhitelisted
 *AccountApi* | [**pnl**](docs/AccountApi.md#pnl) | **GET** /api/v1/pnl | pnl
 *AccountApi* | [**public_pools**](docs/AccountApi.md#public_pools) | **GET** /api/v1/publicPools | publicPools
 *BlockApi* | [**block**](docs/BlockApi.md#block) | **GET** /api/v1/block | block
@@ -80,10 +77,7 @@ Class | Method | HTTP request | Description
 *BlockApi* | [**current_height**](docs/BlockApi.md#current_height) | **GET** /api/v1/currentHeight | currentHeight
 *CandlestickApi* | [**candlesticks**](docs/CandlestickApi.md#candlesticks) | **GET** /api/v1/candlesticks | candlesticks
 *CandlestickApi* | [**fundings**](docs/CandlestickApi.md#fundings) | **GET** /api/v1/fundings | fundings
-*InfoApi* | [**layer2_basic_info**](docs/InfoApi.md#layer2_basic_info) | **GET** /api/v1/layer2BasicInfo | layer2BasicInfo
-*OrderApi* | [**account_active_orders**](docs/OrderApi.md#account_active_orders) | **GET** /api/v1/accountActiveOrders | accountActiveOrders
 *OrderApi* | [**account_inactive_orders**](docs/OrderApi.md#account_inactive_orders) | **GET** /api/v1/accountInactiveOrders | accountInactiveOrders
-*OrderApi* | [**account_orders**](docs/OrderApi.md#account_orders) | **GET** /api/v1/accountOrders | accountOrders
 *OrderApi* | [**exchange_stats**](docs/OrderApi.md#exchange_stats) | **GET** /api/v1/exchangeStats | exchangeStats
 *OrderApi* | [**order_book_details**](docs/OrderApi.md#order_book_details) | **GET** /api/v1/orderBookDetails | orderBookDetails
 *OrderApi* | [**order_book_orders**](docs/OrderApi.md#order_book_orders) | **GET** /api/v1/orderBookOrders | orderBookOrders
@@ -92,12 +86,10 @@ Class | Method | HTTP request | Description
 *OrderApi* | [**trades**](docs/OrderApi.md#trades) | **GET** /api/v1/trades | trades
 *RootApi* | [**info**](docs/RootApi.md#info) | **GET** /info | info
 *RootApi* | [**status**](docs/RootApi.md#status) | **GET** / | status
-*TransactionApi* | [**account_pending_txs**](docs/TransactionApi.md#account_pending_txs) | **GET** /api/v1/accountPendingTxs | accountPendingTxs
 *TransactionApi* | [**account_txs**](docs/TransactionApi.md#account_txs) | **GET** /api/v1/accountTxs | accountTxs
 *TransactionApi* | [**block_txs**](docs/TransactionApi.md#block_txs) | **GET** /api/v1/blockTxs | blockTxs
 *TransactionApi* | [**deposit_history**](docs/TransactionApi.md#deposit_history) | **GET** /api/v1/deposit/history | deposit_history
 *TransactionApi* | [**next_nonce**](docs/TransactionApi.md#next_nonce) | **GET** /api/v1/nextNonce | nextNonce
-*TransactionApi* | [**pending_txs**](docs/TransactionApi.md#pending_txs) | **GET** /api/v1/pendingTxs | pendingTxs
 *TransactionApi* | [**send_tx**](docs/TransactionApi.md#send_tx) | **POST** /api/v1/sendTx | sendTx
 *TransactionApi* | [**send_tx_batch**](docs/TransactionApi.md#send_tx_batch) | **POST** /api/v1/sendTxBatch | sendTxBatch
 *TransactionApi* | [**tx**](docs/TransactionApi.md#tx) | **GET** /api/v1/tx | tx
@@ -115,7 +107,6 @@ Class | Method | HTTP request | Description
  - [AccountPnL](docs/AccountPnL.md)
  - [AccountPosition](docs/AccountPosition.md)
  - [AccountStats](docs/AccountStats.md)
- - [Accounts](docs/Accounts.md)
  - [ApiKey](docs/ApiKey.md)
  - [Block](docs/Block.md)
  - [Blocks](docs/Blocks.md)
@@ -132,12 +123,9 @@ Class | Method | HTTP request | Description
  - [DetailedCandlestick](docs/DetailedCandlestick.md)
  - [EnrichedTx](docs/EnrichedTx.md)
  - [ExchangeStats](docs/ExchangeStats.md)
- - [FeeBucket](docs/FeeBucket.md)
  - [Funding](docs/Funding.md)
  - [Fundings](docs/Fundings.md)
- - [IsWhitelisted](docs/IsWhitelisted.md)
  - [L1ProviderInfo](docs/L1ProviderInfo.md)
- - [Layer2BasicInfo](docs/Layer2BasicInfo.md)
  - [Liquidation](docs/Liquidation.md)
  - [MarketInfo](docs/MarketInfo.md)
  - [NextNonce](docs/NextNonce.md)
@@ -158,12 +146,9 @@ Class | Method | HTTP request | Description
  - [PublicPoolShare](docs/PublicPoolShare.md)
  - [PublicPools](docs/PublicPools.md)
  - [ReqGetAccount](docs/ReqGetAccount.md)
- - [ReqGetAccountActiveOrders](docs/ReqGetAccountActiveOrders.md)
  - [ReqGetAccountApiKeys](docs/ReqGetAccountApiKeys.md)
  - [ReqGetAccountByL1Address](docs/ReqGetAccountByL1Address.md)
  - [ReqGetAccountInactiveOrders](docs/ReqGetAccountInactiveOrders.md)
- - [ReqGetAccountOrders](docs/ReqGetAccountOrders.md)
- - [ReqGetAccountPendingTxs](docs/ReqGetAccountPendingTxs.md)
  - [ReqGetAccountPnL](docs/ReqGetAccountPnL.md)
  - [ReqGetAccountTxs](docs/ReqGetAccountTxs.md)
  - [ReqGetBlock](docs/ReqGetBlock.md)
@@ -171,7 +156,6 @@ Class | Method | HTTP request | Description
  - [ReqGetByAccount](docs/ReqGetByAccount.md)
  - [ReqGetCandlesticks](docs/ReqGetCandlesticks.md)
  - [ReqGetDepositHistory](docs/ReqGetDepositHistory.md)
- - [ReqGetFeeBucket](docs/ReqGetFeeBucket.md)
  - [ReqGetFundings](docs/ReqGetFundings.md)
  - [ReqGetL1Tx](docs/ReqGetL1Tx.md)
  - [ReqGetLatestDeposit](docs/ReqGetLatestDeposit.md)
@@ -187,7 +171,6 @@ Class | Method | HTTP request | Description
  - [ReqGetTrades](docs/ReqGetTrades.md)
  - [ReqGetTx](docs/ReqGetTx.md)
  - [ReqGetWithdrawHistory](docs/ReqGetWithdrawHistory.md)
- - [ReqIsWhitelisted](docs/ReqIsWhitelisted.md)
  - [ResultCode](docs/ResultCode.md)
  - [SimpleOrder](docs/SimpleOrder.md)
  - [Status](docs/Status.md)
@@ -201,14 +184,15 @@ Class | Method | HTTP request | Description
  - [Txs](docs/Txs.md)
  - [ValidatorInfo](docs/ValidatorInfo.md)
  - [WithdrawHistory](docs/WithdrawHistory.md)
- - [WithdrawHistoryCursor](docs/WithdrawHistoryCursor.md)
  - [WithdrawHistoryItem](docs/WithdrawHistoryItem.md)
  - [ZkLighterInfo](docs/ZkLighterInfo.md)
 
 
-<a id="documentation-for-authorization"></a>
-## Documentation For Authorization
+[//]: # (<a id="documentation-for-authorization"></a>)
 
-Endpoints do not require authorization.
+[//]: # (## Documentation For Authorization)
+
+[//]: # ()
+[//]: # (Endpoints do not require authorization.)
 
 

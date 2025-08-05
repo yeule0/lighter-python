@@ -5,8 +5,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**account_index** | **int** |  | 
 **name** | **str** |  | 
 **description** | **str** |  | 
+**can_invite** | **bool** |  Remove After FE uses L1 meta endpoint | 
+**referral_points_percentage** | **str** |  Remove After FE uses L1 meta endpoint | 
 
 ## Example
 

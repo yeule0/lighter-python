@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 # The address provided belongs to a dummy account registered on Testnet.
 L1_ADDRESS = "0x8D7f03FdE1A626223364E592740a233b72395235"
-ACCOUNT_INDEX = 595
+ACCOUNT_INDEX = 65
 
 
 async def print_api(method, *args, **kwargs):
@@ -22,16 +22,6 @@ async def account_apis(client: lighter.ApiClient):
     await print_api(account_instance.account, by="index", value=str(ACCOUNT_INDEX))
     await print_api(account_instance.accounts_by_l1_address, l1_address=L1_ADDRESS)
     await print_api(account_instance.apikeys, account_index=ACCOUNT_INDEX, api_key_index=1)
-    await print_api(account_instance.fee_bucket, account_index=ACCOUNT_INDEX)
-    await print_api(
-        account_instance.pnl,
-        by="index",
-        value=str(ACCOUNT_INDEX),
-        resolution="1h",
-        start_timestamp=int(datetime.datetime.now().timestamp() - 60 * 60 * 24),
-        end_timestamp=int(datetime.datetime.now().timestamp()),
-        count_back=2,
-    )
     await print_api(account_instance.public_pools, filter="all", limit=1, index=0)
 
 
@@ -64,21 +54,13 @@ async def candlestick_apis(client: lighter.ApiClient):
     )
 
 
-async def info_apis(client: lighter.ApiClient):
-    logging.info("INFO APIS")
-    info_instance = lighter.InfoApi(client)
-    await print_api(info_instance.layer2_basic_info)
-
-
 async def order_apis(client: lighter.ApiClient):
     logging.info("ORDER APIS")
     order_instance = lighter.OrderApi(client)
     await print_api(order_instance.exchange_stats)
     await print_api(order_instance.order_book_details, market_id=0)
-    await print_api(order_instance.order_book_orders, market_id=0, limit=2)
     await print_api(order_instance.order_books)
     await print_api(order_instance.recent_trades, market_id=0, limit=2)
-    await print_api(order_instance.trades, sort_by="timestamp", market_id=0, limit=2)
 
 
 async def transaction_apis(client: lighter.ApiClient):
@@ -100,7 +82,6 @@ async def main():
     await account_apis(client)
     await block_apis(client)
     await candlestick_apis(client)
-    await info_apis(client)
     await order_apis(client)
     await transaction_apis(client)
     await client.close()

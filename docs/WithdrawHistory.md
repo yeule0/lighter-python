@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 **code** | **int** |  | 
 **message** | **str** |  | [optional] 
 **withdraws** | [**List[WithdrawHistoryItem]**](WithdrawHistoryItem.md) |  | 
-**cursor** | [**WithdrawHistoryCursor**](WithdrawHistoryCursor.md) |  | 
+**cursor** | **str** |  | 
 
 ## Example
 

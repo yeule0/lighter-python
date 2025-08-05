@@ -5,11 +5,12 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**auth** | **str** |  | [optional] 
 **market_id** | **int** |  | [optional] 
 **account_index** | **int** |  | [optional] [default to -1]
 **order_index** | **int** |  | [optional] 
 **sort_by** | **str** |  | 
-**sort_dir** | **str** |  | [optional] [default to 'asc']
+**sort_dir** | **str** |  | [optional] [default to 'desc']
 **cursor** | **str** |  | [optional] 
 **var_from** | **int** |  | [optional] [default to -1]
 **ask_filter** | **int** |  | [optional] 

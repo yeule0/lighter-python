@@ -7,6 +7,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **order_index** | **int** |  | 
 **client_order_index** | **int** |  | 
+**order_id** | **str** |  | 
+**client_order_id** | **str** |  | 
 **market_index** | **int** |  | 
 **owner_account_index** | **int** |  | 
 **initial_base_amount** | **str** |  | 
@@ -25,8 +27,13 @@ Name | Type | Description | Notes
 **trigger_price** | **str** |  | 
 **order_expiry** | **int** |  | 
 **status** | **str** |  | 
+**trigger_status** | **str** |  | 
 **trigger_time** | **int** |  | 
 **parent_order_index** | **int** |  | 
+**parent_order_id** | **str** |  | 
+**to_trigger_order_id_0** | **str** |  | 
+**to_trigger_order_id_1** | **str** |  | 
+**to_cancel_order_id_0** | **str** |  | 
 **block_height** | **int** |  | 
 **timestamp** | **int** |  | 
 
