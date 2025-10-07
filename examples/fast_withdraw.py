@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fast Withdraw - Instant withdrawal from Lighter L2 to Ethereum L1
+Fast Withdraw - Instant withdrawal from Lighter L2 to Arbitrum
 """
 
 import asyncio
