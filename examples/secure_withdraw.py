@@ -2,9 +2,7 @@
 """
 Secure Withdraw - withdraw from Lighter L2 to Ethereum L1 (takes ~2 hours)
 """
-
 import asyncio
-
 import lighter
 
 BASE_URL = "https://mainnet.zklighter.elliot.ai"
@@ -13,7 +11,6 @@ API_KEY_INDEX = 2                                   # Replace with your API key 
 API_KEY_PRIVATE_KEY = "0xYourApiKeyPrivateKeyHere"  # Replace with your API key private key
 AMOUNT_USDC = 5.0                                   # Amount of USDC to withdraw
 
-
 async def main():
     client = lighter.SignerClient(
         url=BASE_URL,
@@ -21,7 +18,7 @@ async def main():
         account_index=ACCOUNT_INDEX,
         api_key_index=API_KEY_INDEX,
     )
-
+    
     try:
         withdraw_info, response, err = await client.withdraw(usdc_amount=AMOUNT_USDC)
         if err:
